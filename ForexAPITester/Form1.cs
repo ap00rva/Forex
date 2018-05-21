@@ -608,7 +608,6 @@ namespace ForexAPITester
                         }
                     }
                 }
-                //priceViews = new List<PriceView>();
                 PriceView previousPrice = new PriceView() { SnapshotTime = String.Empty };
                 foreach (var price in prices.prices)
                 {
