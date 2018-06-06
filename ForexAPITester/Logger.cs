@@ -14,7 +14,7 @@ namespace ForexAPITester
         static Logger()
         {
             fs = File.CreateText($"ProbeDetails{DateTime.Now.ToString("yyyyMMddHHmm")}.log");
-            fsData = File.CreateText($"Data{DateTime.Now.ToString("yyyyMMdd")}.txt");
+            fsData = File.CreateText($"Data{DateTime.Now.ToString("yyyyMMddHHmm")}.txt");
             fsData.Write("[{}");
         }
 

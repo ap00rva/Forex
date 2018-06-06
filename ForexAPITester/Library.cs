@@ -10,5 +10,12 @@ namespace ForexAPITester
     {
         public const string UpBar = "Up Bar";
         public const string DownBar = "Down Bar";
+
+        public enum Relations
+        {
+            Both = 0,
+            UpOnly = 1,
+            DownOnly = 2
+        }
     }
 }

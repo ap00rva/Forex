@@ -182,8 +182,8 @@ namespace ForexAPITester
             }
             if (!isThird)
             {
-                return (currentPair[0].AskLow <= previousPair[1].AskOpen && currentPair[0].AskClose >= Math.Min(previousPair[0].AskLow, previousPair[1].AskLow))
-                    || (currentPair[1].AskLow <= previousPair[1].AskOpen && currentPair[1].AskClose >= Math.Min(previousPair[0].AskLow, previousPair[1].AskLow));
+                return (currentPair[0].AskLow <= previousPair[0].AskOpen && currentPair[0].AskClose >= Math.Min(previousPair[0].AskLow, previousPair[1].AskLow))
+                    || (currentPair[1].AskLow <= previousPair[0].AskOpen && currentPair[1].AskClose >= Math.Min(previousPair[0].AskLow, previousPair[1].AskLow));
             }
             else
             {
@@ -205,8 +205,8 @@ namespace ForexAPITester
             }
             if (!isThird)
             {
-                return (currentPair[0].AskHigh >= previousPair[1].AskOpen && currentPair[0].AskClose <= Math.Max(previousPair[0].AskHigh, previousPair[1].AskHigh))
-                    || (currentPair[1].AskHigh >= previousPair[1].AskOpen && currentPair[1].AskClose <= Math.Max(previousPair[0].AskHigh, previousPair[1].AskHigh));
+                return (currentPair[0].AskHigh >= previousPair[0].AskOpen && currentPair[0].AskClose <= Math.Max(previousPair[0].AskHigh, previousPair[1].AskHigh))
+                    || (currentPair[1].AskHigh >= previousPair[0].AskOpen && currentPair[1].AskClose <= Math.Max(previousPair[0].AskHigh, previousPair[1].AskHigh));
             }
             else
             {

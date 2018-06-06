@@ -14,6 +14,7 @@ using System.IO;
 using Telerik.WinControls.UI;
 using Telerik.Charting;
 using System.Threading;
+using static ForexAPITester.Library;
 
 namespace ForexAPITester
 {
@@ -36,6 +37,7 @@ namespace ForexAPITester
         int signallingWindowMinutes = -120;
         int probeWindowMinutes = 120;
         string logFile;
+        Relations relationToCheck = Relations.Both;
         public Form1()
         {
             InitializeComponent();
@@ -525,25 +527,25 @@ namespace ForexAPITester
             //store only 6 hours worth of data
             reduceDataSize();
             loadData(timeStart.Value, timeStart.Value.AddMinutes(minutesToCheck - 1));
-            List<PriceView> pViews = new List<PriceView>();
+            //List<PriceView> pViews = new List<PriceView>();
             DateTime start1;
             if (priceViews.Any())
             {
 
                 var last = priceViews.Last();
                 start1 = last.SnapshotDateTime.AddMinutes(signallingWindowMinutes);
-                pViews = priceViews.Where(p => p.SnapshotDateTime >= start1).OrderBy(p => p.SnapshotDateTime).ToList();
+                var pViews = priceViews.Where(p => p.SnapshotDateTime >= start1).OrderBy(p => p.SnapshotDateTime).ToList();
                 var probe = new PriceView();
                 if (pViews.Any())
                 {
                     //this is probe, check if this is up or down. accordingly, check for 1 type of reversal only
                     //if probe is up, check for pair or down reversals else opposite
-                    if (last.AskUpDown == Library.UpBar)
+                    if (last.AskUpDown == Library.UpBar && (relationToCheck == Relations.Both || relationToCheck == Relations.UpOnly))
                     {
                         //mean probe closed up
                         probe = SignalHelper.findRelated(Library.DownBar, pViews, probeWindowMinutes);
                     }
-                    else
+                    else if (relationToCheck == Relations.Both || relationToCheck == Relations.DownOnly)
                     {
                         probe = SignalHelper.findRelated(Library.UpBar, pViews, probeWindowMinutes);
                     }
@@ -587,6 +589,13 @@ namespace ForexAPITester
         {
             start1 = start1.AddMinutes(-1);
             end1 = end1.AddMinutes(-1);
+            if (start1.Minute == 0 || start1.Minute % minutesToCheck == 0)
+            {
+                //avoid checks at 3min intervals
+                start1.AddMinutes(1);
+                end1.AddMinutes(1);
+            }
+
             //Logger.WriteLog($"Load Start:{start1.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss")} End:{end1.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss")}");
             var response = APIHelper.makeRequest($"https://api.ig.com/gateway/deal/prices/{txtEpic.Text}?resolution=MINUTE_{minutesToCheck}&from={start1.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:00")}&to={end1.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:00")}", apiKey, xToken, cstToken, Method.GET);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -608,7 +617,7 @@ namespace ForexAPITester
                         }
                     }
                 }
-                PriceView previousPrice = new PriceView() { SnapshotTime = String.Empty };
+                PriceView previousPrice = priceViews.LastOrDefault() ?? new PriceView() { SnapshotTime = String.Empty };
                 foreach (var price in prices.prices)
                 {
                     var pview = new PriceView()
@@ -726,18 +735,18 @@ namespace ForexAPITester
                 {
                     end1 = end1.AddMinutes(minutesToCheck);
                     start1 = end1.AddMinutes(signallingWindowMinutes);
-                    var pViews = priceViews.Where(p => DateTime.Parse(p.SnapshotTime) >= start1 && DateTime.Parse(p.SnapshotTime) <= end1).ToList();
+                    var pViews = priceViews.Where(p => DateTime.Parse(p.SnapshotTime) >= start1 && DateTime.Parse(p.SnapshotTime) <= end1).OrderBy(p => p.SnapshotDateTime).ToList();
                     if (pViews.Any())
                     {
                         var last = pViews.Last();
                         //this is probe, check if this is up or down. accordingly, check for 1 type of reversal only
                         //if probe is up, check for pair or down reversals else opposite
-                        if (last.AskUpDown == Library.UpBar)
+                        if (last.AskUpDown == Library.UpBar && (relationToCheck == Relations.Both || relationToCheck == Relations.UpOnly))
                         {
                             //mean probe closed up
                             probe = SignalHelper.findRelated(Library.DownBar, pViews, probeWindowMinutes);
                         }
-                        else
+                        else if (relationToCheck == Relations.Both || relationToCheck == Relations.DownOnly)
                         {
                             probe = SignalHelper.findRelated(Library.UpBar, pViews, probeWindowMinutes);
                         }
@@ -789,6 +798,7 @@ namespace ForexAPITester
             //    timeStart.Value = DateTime.UtcNow; //.AddMinutes(minutesToCheck * (-1));
             //}
             timeStart.Value = timeStart1.Value;
+            timeEnd.Value = DateTime.Now;
             if (timeStart.Value < DateTime.Now.AddMinutes(-1))
             {
                 //means collect some previous data until now then carry on with current collection
@@ -960,8 +970,8 @@ namespace ForexAPITester
             if (priceViews.Any())
             {
                 var pLast = priceViews.Last();
-                DateTime earliestTime = DateTime.Parse(pLast.SnapshotTime).AddHours(-6);
-                priceViews.RemoveAll(p => DateTime.Parse(p.SnapshotTime) < earliestTime);
+                DateTime earliestTime = pLast.SnapshotDateTime.AddHours(-6);
+                priceViews.RemoveAll(p => p.SnapshotDateTime < earliestTime);
             }
         }
 
@@ -1050,6 +1060,21 @@ namespace ForexAPITester
         private void cboProbeWindowMinutes_SelectedIndexChanged(object sender, EventArgs e)
         {
             probeWindowMinutes = int.Parse(cboProbeWindowMinutes.SelectedItem.ToString());
+        }
+
+        private void rdoBoth_CheckedChanged(object sender, EventArgs e)
+        {
+            relationToCheck = Relations.Both;
+        }
+
+        private void rdoDownOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            relationToCheck = Relations.DownOnly;
+        }
+
+        private void rdoUpOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            relationToCheck = Relations.UpOnly;
         }
     }
 }

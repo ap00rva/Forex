@@ -100,6 +100,10 @@
             this.label13 = new System.Windows.Forms.Label();
             this.btnLoginTrade = new System.Windows.Forms.Button();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.rdoBoth = new System.Windows.Forms.RadioButton();
+            this.rdoDownOnly = new System.Windows.Forms.RadioButton();
+            this.rdoUpOnly = new System.Windows.Forms.RadioButton();
             this.cboProbeWindowMinutes = new System.Windows.Forms.ComboBox();
             this.label21 = new System.Windows.Forms.Label();
             this.cboSignallingMinutes = new System.Windows.Forms.ComboBox();
@@ -126,6 +130,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.radChartView2)).BeginInit();
             this.tabPage4.SuspendLayout();
             this.tabPage5.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnLogin
@@ -395,7 +400,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 230);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1027, 681);
+            this.tabControl1.Size = new System.Drawing.Size(925, 681);
             this.tabControl1.TabIndex = 29;
             // 
             // tabPage1
@@ -405,7 +410,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1019, 655);
+            this.tabPage1.Size = new System.Drawing.Size(917, 655);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Chart";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -430,7 +435,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridView2.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridView2.Location = new System.Drawing.Point(760, 20);
+            this.dataGridView2.Location = new System.Drawing.Point(675, 20);
             this.dataGridView2.Name = "dataGridView2";
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
@@ -477,7 +482,7 @@
             this.radChartView1.ShowPanZoom = true;
             this.radChartView1.ShowToolTip = true;
             this.radChartView1.ShowTrackBall = true;
-            this.radChartView1.Size = new System.Drawing.Size(746, 578);
+            this.radChartView1.Size = new System.Drawing.Size(661, 578);
             this.radChartView1.TabIndex = 29;
             // 
             // tabPage2
@@ -486,7 +491,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1036, 655);
+            this.tabPage2.Size = new System.Drawing.Size(917, 655);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Data";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -534,7 +539,7 @@
             this.tabPage3.Controls.Add(this.rdoSwitchUp);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1036, 655);
+            this.tabPage3.Size = new System.Drawing.Size(917, 655);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Switch";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -635,7 +640,7 @@
             this.tabPage4.Controls.Add(this.btnLoginTrade);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(1036, 655);
+            this.tabPage4.Size = new System.Drawing.Size(917, 655);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Trade";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -780,6 +785,7 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.groupBox1);
             this.tabPage5.Controls.Add(this.cboProbeWindowMinutes);
             this.tabPage5.Controls.Add(this.label21);
             this.tabPage5.Controls.Add(this.cboSignallingMinutes);
@@ -788,10 +794,57 @@
             this.tabPage5.Controls.Add(this.cboInterval);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(1036, 655);
+            this.tabPage5.Size = new System.Drawing.Size(917, 655);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Options";
             this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.rdoBoth);
+            this.groupBox1.Controls.Add(this.rdoDownOnly);
+            this.groupBox1.Controls.Add(this.rdoUpOnly);
+            this.groupBox1.Location = new System.Drawing.Point(7, 106);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(239, 100);
+            this.groupBox1.TabIndex = 45;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Relations";
+            // 
+            // rdoBoth
+            // 
+            this.rdoBoth.AutoSize = true;
+            this.rdoBoth.Checked = true;
+            this.rdoBoth.Location = new System.Drawing.Point(6, 65);
+            this.rdoBoth.Name = "rdoBoth";
+            this.rdoBoth.Size = new System.Drawing.Size(47, 17);
+            this.rdoBoth.TabIndex = 47;
+            this.rdoBoth.TabStop = true;
+            this.rdoBoth.Text = "Both";
+            this.rdoBoth.UseVisualStyleBackColor = true;
+            this.rdoBoth.CheckedChanged += new System.EventHandler(this.rdoBoth_CheckedChanged);
+            // 
+            // rdoDownOnly
+            // 
+            this.rdoDownOnly.AutoSize = true;
+            this.rdoDownOnly.Location = new System.Drawing.Point(6, 42);
+            this.rdoDownOnly.Name = "rdoDownOnly";
+            this.rdoDownOnly.Size = new System.Drawing.Size(77, 17);
+            this.rdoDownOnly.TabIndex = 46;
+            this.rdoDownOnly.Text = "Down Only";
+            this.rdoDownOnly.UseVisualStyleBackColor = true;
+            this.rdoDownOnly.CheckedChanged += new System.EventHandler(this.rdoDownOnly_CheckedChanged);
+            // 
+            // rdoUpOnly
+            // 
+            this.rdoUpOnly.AutoSize = true;
+            this.rdoUpOnly.Location = new System.Drawing.Point(6, 19);
+            this.rdoUpOnly.Name = "rdoUpOnly";
+            this.rdoUpOnly.Size = new System.Drawing.Size(63, 17);
+            this.rdoUpOnly.TabIndex = 45;
+            this.rdoUpOnly.Text = "Up Only";
+            this.rdoUpOnly.UseVisualStyleBackColor = true;
+            this.rdoUpOnly.CheckedChanged += new System.EventHandler(this.rdoUpOnly_CheckedChanged);
             // 
             // cboProbeWindowMinutes
             // 
@@ -822,7 +875,9 @@
             this.cboSignallingMinutes.FormattingEnabled = true;
             this.cboSignallingMinutes.Items.AddRange(new object[] {
             "120",
-            "90"});
+            "90",
+            "75",
+            "60"});
             this.cboSignallingMinutes.Location = new System.Drawing.Point(194, 44);
             this.cboSignallingMinutes.Name = "cboSignallingMinutes";
             this.cboSignallingMinutes.Size = new System.Drawing.Size(52, 21);
@@ -965,7 +1020,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1284, 781);
+            this.ClientSize = new System.Drawing.Size(1318, 781);
             this.Controls.Add(this.timeStart);
             this.Controls.Add(this.btnResetInterval);
             this.Controls.Add(this.lblStatus);
@@ -1021,6 +1076,8 @@
             this.tabPage4.PerformLayout();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1101,6 +1158,10 @@
         private System.Windows.Forms.ComboBox cboSignallingMinutes;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.RadioButton rdoBoth;
+        private System.Windows.Forms.RadioButton rdoDownOnly;
+        private System.Windows.Forms.RadioButton rdoUpOnly;
     }
 }
 
