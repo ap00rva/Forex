@@ -44,7 +44,7 @@ namespace ForexAPITester
         {
             get
             {
-                return AskClose >= AskOpen ? "Up Bar" : "Down Bar";
+                return AskClose > AskOpen ? "Up Bar" : (AskClose < AskOpen ? "Down Bar" : "None");
             }
         }
         public bool Ask2BarReversal { get; set; }
@@ -53,6 +53,8 @@ namespace ForexAPITester
         public bool IsUpProbe { get; set; } = false;
         public bool IsDownProbe { get; set; } = false;
         public string ProbeRelations { get; set; }
+        public bool ProbeQualified { get; set; } = false;
+        public string ProbeQualifications { get; set; }
     }
 
     public class PriceViewComparer : IEqualityComparer<PriceView>

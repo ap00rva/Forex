@@ -62,7 +62,7 @@ namespace ForexAPITester
             return response;
 
         }
-        public static IRestResponse makeTradeRequest(string Url, string apiKey, string XToken, string CstToken, TradeRequest postData)
+        public static IRestResponse MakeTradeRequest(string Url, string apiKey, string XToken, string CstToken, TradeRequest postData)
         {
             var client = new RestClient();
             client.BaseUrl = new Uri(Url);
@@ -78,7 +78,7 @@ namespace ForexAPITester
             return response;
 
         }
-        public static IRestResponse closeTradeRequest(string Url, string apiKey, string XToken, string CstToken, CloseTradeRequest postData)
+        public static IRestResponse CloseTradeRequest(string Url, string apiKey, string XToken, string CstToken, CloseTradeRequest postData)
         {
             var client = new RestClient();
             client.BaseUrl = new Uri(Url);
@@ -91,6 +91,22 @@ namespace ForexAPITester
             request.AddHeader("Version", "1");
             request.AddHeader("_method", "DELETE");
             request.AddJsonBody(postData);
+            var response = client.Execute(request);
+            return response;
+
+        }
+
+        public static IRestResponse Positions(string Url, string apiKey, string XToken, string CstToken)
+        {
+            var client = new RestClient();
+            client.BaseUrl = new Uri(Url);
+            var request = new RestRequest();
+            request.Method = Method.GET;
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("X-IG-API-KEY", apiKey);
+            request.AddHeader("X-SECURITY-TOKEN", XToken);
+            request.AddHeader("CST", CstToken);
+            request.AddHeader("Version", "2");
             var response = client.Execute(request);
             return response;
 

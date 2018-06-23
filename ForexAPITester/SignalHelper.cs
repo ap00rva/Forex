@@ -8,7 +8,7 @@ namespace ForexAPITester
 {
     public static class SignalHelper
     {
-        public static PriceView findRelated(string reversalType, List<PriceView> pViews, int probeWindowMinutes = 30)
+        public static PriceView FindRelated(string reversalType, List<PriceView> pViews, int probeWindowMinutes = 30)
         {
 
             List<PriceView> relatedBars = new List<PriceView>();
@@ -91,7 +91,7 @@ namespace ForexAPITester
                                             Logger.WriteLog($"{p4.TimeCategory}-{p6.TimeCategory}-UpBarCondition2/2 met:Low:{p4.AskLow}-Low:{p6.AskOpen}-Close:{p4.AskClose}-Low:{Math.Min(p5.AskLow, p6.AskLow)}");
                                             //found all pairs
                                             probe.IsDownProbe = true;
-                                            probe.ProbeRelations = $"{p1.TimeCategory},{p3.TimeCategory},{p5.TimeCategory}";
+                                            probe.ProbeRelations = $"{p2.TimeCategory},{p4.TimeCategory},{p6.TimeCategory}";
                                             //set them as green and exit
                                             //colourGridRows(relatedBars, Color.LightGreen);
                                             foundAll = true;
@@ -128,7 +128,7 @@ namespace ForexAPITester
 
                                             //found all pairs
                                             probe.IsUpProbe = true;
-                                            probe.ProbeRelations = $"{p1.TimeCategory},{p3.TimeCategory},{p5.TimeCategory}";
+                                            probe.ProbeRelations = $"{p2.TimeCategory},{p4.TimeCategory},{p6.TimeCategory}";
                                             //set them as green and exit
                                             //colourGridRows(relatedBars, Color.Orange);
                                             foundAll = true;
@@ -213,6 +213,35 @@ namespace ForexAPITester
                 return (currentPair[0].AskHigh > Math.Max(previousPair[0].AskHigh, previousPair[1].AskHigh) && (currentPair[0].AskClose <= Math.Max(previousPair[0].AskHigh, previousPair[1].AskHigh))
                     || currentPair[1].AskHigh > Math.Max(previousPair[0].AskHigh, previousPair[1].AskHigh)) && (currentPair[1].AskClose <= Math.Max(previousPair[0].AskHigh, previousPair[1].AskHigh));
             }
+        }
+
+        public static PriceView CheckQualification(PriceViewPair pricePair, PriceView probe, IEnumerable<PriceView> pViews, int filterWindowMins)
+        {
+
+            DateTime endTime = pricePair.PricePair[0].SnapshotDateTime;
+            DateTime lookBackTime = endTime.AddMinutes(filterWindowMins);
+            var filterDataToCheck = pViews.Where(p => p.SnapshotDateTime >= lookBackTime && p.SnapshotDateTime <= endTime).OrderBy(p => p.SnapshotDateTime);
+            if (probe.IsUpProbe)
+            {
+                //find highesthigh
+                var filterHigh = filterDataToCheck.Max(p => p.AskHigh);
+                if (pricePair.HighestHigh() >= filterHigh)
+                {
+                    probe.ProbeQualified = true;
+                    probe.ProbeQualifications = pricePair.PricePair[0].TimeCategory;
+                }
+            }
+            else if (probe.IsDownProbe)
+            {
+                //find lowestlow
+                var filterLow = filterDataToCheck.Min(p => p.AskLow);
+                if (pricePair.LowestLow() <= filterLow)
+                {
+                    probe.ProbeQualified = true;
+                    probe.ProbeQualifications = pricePair.PricePair[0].TimeCategory;
+                }
+            }
+            return probe;
         }
 
     }

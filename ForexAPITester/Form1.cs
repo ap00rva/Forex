@@ -30,13 +30,16 @@ namespace ForexAPITester
         List<PriceView> priceViews = new List<PriceView>();
         List<PriceView> allProbes = new List<PriceView>();
         List<PriceView> switchViews = new List<PriceView>();
-        string apiKey = "27fc35faa6cc6ce0a7875e27afc5c713d77fa4a3";
-        string tradeApiKey = "eeb7ac8e4ceee6a724bbd21214d880d1d7e9a549";
+        string apiKey = ""; // "27fc35faa6cc6ce0a7875e27afc5c713d77fa4a3";
+        string tradeApiKey = ""; //"eeb7ac8e4ceee6a724bbd21214d880d1d7e9a549";
         int totalRequests = 0;
         int minutesToCheck = 3;
         int signallingWindowMinutes = -120;
         int probeWindowMinutes = 120;
+        int filterWindowMinutes = -30;
         string logFile;
+        string userName = ""; //"apoorvadixit";
+        string password = ""; //"Jaisai64!";
         Relations relationToCheck = Relations.Both;
         public Form1()
         {
@@ -45,25 +48,33 @@ namespace ForexAPITester
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            AccountMain acctMain;
-            if (APIHelper.LoginToAccount("https://api.ig.com/gateway/deal/session", "27fc35faa6cc6ce0a7875e27afc5c713d77fa4a3", new Login()
+            if (!string.IsNullOrWhiteSpace(apiKey))
             {
-                identifier = "apoorvadixit",
-                password = "Jaisai64!",
-                encryptedPassword = null
-            }, out xToken, out cstToken, out acctMain))
-            {
-                txtLog.Text = "Login successfull";
-                userData = new FileStream(Application.UserAppDataPath + "\\appdata.txt", FileMode.OpenOrCreate);
-                userData.Position = 0;
-                using (StreamWriter userWriter = new StreamWriter(userData))
-                {
-                    userWriter.WriteLine(cstToken);
-                    userWriter.WriteLine(xToken);
-                    userWriter.Flush();
-                    userWriter.Close();
-                }
 
+                AccountMain acctMain;
+                if (APIHelper.LoginToAccount("https://api.ig.com/gateway/deal/session", apiKey, new Login()
+                {
+                    identifier = userName,
+                    password = password,
+                    encryptedPassword = null
+                }, out xToken, out cstToken, out acctMain))
+                {
+                    txtLog.Text = "Login successfull";
+                    userData = new FileStream(Application.UserAppDataPath + "\\appdata.txt", FileMode.OpenOrCreate);
+                    userData.Position = 0;
+                    using (StreamWriter userWriter = new StreamWriter(userData))
+                    {
+                        userWriter.WriteLine(cstToken);
+                        userWriter.WriteLine(xToken);
+                        userWriter.Flush();
+                        userWriter.Close();
+                    }
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please setup login credentials first", "Cannot login", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             //var client = new RestClient();
             //client.BaseUrl = new Uri("https://api.ig.com/gateway/deal/session");
@@ -128,6 +139,9 @@ namespace ForexAPITester
 
         private void btnHistoricData_Click(object sender, EventArgs e)
         {
+            loadData(timeStart.Value, timeEnd.Value);
+            btnFindDetailRelated_Click(sender, e);
+
             //loadData(timeStart.Value, timeEnd.Value);
             //var response = APIHelper.makeRequest($"https://api.ig.com/gateway/deal/prices/{txtEpic.Text}?resolution=MINUTE_{minutesToCheck}&from={timeStart.Value.ToString("yyyy-MM-ddTHH:mm")}&to={timeEnd.Value.ToString("yyyy-MM-ddTHH:mm")}", apiKey, xToken, cstToken, Method.GET);
             //if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -211,35 +225,22 @@ namespace ForexAPITester
 #if !DEBUG
                 btnFindRelated.Visible = false;
                 btnFillIntervals.Visible = false;
-                btnHistoricData.Visible = false;
+                //btnHistoricData.Visible = false;
                 btnStartAuto.Visible = false;
                 btnFindDetailRelated.Visible = false;
                 rdoUp.Visible = false;
                 rdoDown.Visible = false;
-                tabControl1.TabPages.RemoveAt(3);
+                //tabControl1.TabPages.RemoveAt(3);
 
 #endif
                 //timeStart.MinDate = DateTime.UtcNow.AddHours(-8);
 
                 logFile = $"log{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}{DateTime.Now.Hour}{DateTime.Now.Minute}.txt";
-                timer1.Interval = (int)TimeSpan.FromMinutes(minutesToCheck).TotalMilliseconds;
+                timer1.Interval = (int)TimeSpan.FromMinutes(1).TotalMilliseconds;
                 //timer1.Start();
                 // Create a file that the application will store user specific data in.
-                userData = new FileStream(Application.UserAppDataPath + "\\appdata.txt", FileMode.OpenOrCreate);
-                string sessionData = String.Empty;
-                using (StreamReader userReader = new StreamReader(userData))
-                {
-                    sessionData = userReader.ReadLine();
-                    if (!String.IsNullOrWhiteSpace(sessionData))
-                    {
-                        cstToken = sessionData;
-                    }
-                    sessionData = userReader.ReadLine();
-                    if (!String.IsNullOrWhiteSpace(sessionData))
-                    {
-                        xToken = sessionData;
-                    }
-                }
+                readTokens();
+                readCredentials();
                 if (!String.IsNullOrWhiteSpace(cstToken) && !String.IsNullOrWhiteSpace(xToken))
                 {
                     txtLog.Text = "Tokens found";
@@ -276,11 +277,11 @@ namespace ForexAPITester
         {
             if (rdoUp.Checked)
             {
-                SignalHelper.findRelated(Library.UpBar, priceViews);
+                SignalHelper.FindRelated(Library.UpBar, priceViews);
             }
             else
             {
-                SignalHelper.findRelated(Library.DownBar, priceViews);
+                SignalHelper.FindRelated(Library.DownBar, priceViews);
             }
         }
 
@@ -515,52 +516,58 @@ namespace ForexAPITester
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            totalRequests += 1;
-            if (totalRequests > 1000)
+            DateTime current = timeStart.Value;
+            if (current.Minute == 0 || current.Minute % minutesToCheck == 0)
             {
-                timer1.Stop();
-                MessageBox.Show("Stopping automatic data collection.", "Message");
-            }
-            //txtLog.AppendText($"{Environment.NewLine} Called at:{DateTime.Now}");
-            //call from time start to start+5mins
-
-            //store only 6 hours worth of data
-            reduceDataSize();
-            loadData(timeStart.Value, timeStart.Value.AddMinutes(minutesToCheck - 1));
-            //List<PriceView> pViews = new List<PriceView>();
-            DateTime start1;
-            if (priceViews.Any())
-            {
-
-                var last = priceViews.Last();
-                start1 = last.SnapshotDateTime.AddMinutes(signallingWindowMinutes);
-                var pViews = priceViews.Where(p => p.SnapshotDateTime >= start1).OrderBy(p => p.SnapshotDateTime).ToList();
-                var probe = new PriceView();
-                if (pViews.Any())
+                //then we can request data for current
+                totalRequests += 1;
+                if (totalRequests > 1000)
                 {
-                    //this is probe, check if this is up or down. accordingly, check for 1 type of reversal only
-                    //if probe is up, check for pair or down reversals else opposite
-                    if (last.AskUpDown == Library.UpBar && (relationToCheck == Relations.Both || relationToCheck == Relations.UpOnly))
-                    {
-                        //mean probe closed up
-                        probe = SignalHelper.findRelated(Library.DownBar, pViews, probeWindowMinutes);
-                    }
-                    else if (relationToCheck == Relations.Both || relationToCheck == Relations.DownOnly)
-                    {
-                        probe = SignalHelper.findRelated(Library.UpBar, pViews, probeWindowMinutes);
-                    }
-                    if (probe.IsUpProbe || probe.IsDownProbe)
-                    {
-                        allProbes.Add(probe);
-                    }
+                    timer1.Stop();
+                    MessageBox.Show("Stopping automatic data collection.", "Message");
                 }
-                //allProbes.AddRange(pViews.Where(p => p.IsDownProbe || p.IsUpProbe));
-                pViews.Clear();
-                saveProbesToLog(allProbes.Distinct(new PriceViewComparer()).OrderBy(p => p.SnapshotDateTime).ToList());
-                rebindProbes();
-                timeStart.Value = timeStart.Value.AddMinutes(minutesToCheck);
-            }
+                //txtLog.AppendText($"{Environment.NewLine} Called at:{DateTime.Now}");
+                //call from time start to start+5mins
 
+                //store only 6 hours worth of data
+                reduceDataSize();
+                //loadData(timeStart.Value, timeStart.Value.AddMinutes(minutesToCheck - 1));
+                loadData(current.AddMinutes(minutesToCheck * (-1)), current, true);
+                //List<PriceView> pViews = new List<PriceView>();
+                DateTime start1;
+                if (priceViews.Any())
+                {
+
+                    var last = priceViews.Last();
+                    start1 = last.SnapshotDateTime.AddMinutes(signallingWindowMinutes);
+                    var pViews = priceViews.Where(p => p.SnapshotDateTime >= start1).OrderBy(p => p.SnapshotDateTime).ToList();
+                    var probe = new PriceView();
+                    if (pViews.Any())
+                    {
+                        //this is probe, check if this is up or down. accordingly, check for 1 type of reversal only
+                        //if probe is up, check for pair or down reversals else opposite
+                        if (last.AskUpDown == Library.UpBar && (relationToCheck == Relations.Both || relationToCheck == Relations.UpOnly))
+                        {
+                            //mean probe closed up
+                            probe = SignalHelper.FindRelated(Library.DownBar, pViews, probeWindowMinutes);
+                        }
+                        else if (last.AskUpDown == Library.DownBar && (relationToCheck == Relations.Both || relationToCheck == Relations.DownOnly))
+                        {
+                            probe = SignalHelper.FindRelated(Library.UpBar, pViews, probeWindowMinutes);
+                        }
+                        if (probe.IsUpProbe || probe.IsDownProbe)
+                        {
+                            checkProbeQualification(probe, priceViews.OrderBy(p => p.SnapshotDateTime), filterWindowMinutes);
+                            allProbes.Add(probe);
+                        }
+                    }
+                    //allProbes.AddRange(pViews.Where(p => p.IsDownProbe || p.IsUpProbe));
+                    pViews.Clear();
+                    saveProbesToLog(allProbes.Distinct(new PriceViewComparer()).OrderBy(p => p.SnapshotDateTime).ToList());
+                    rebindProbes();
+                }
+            }
+            timeStart.Value = timeStart.Value.AddMinutes(1);
         }
 
         private void btnStartAuto_Click(object sender, EventArgs e)
@@ -585,7 +592,7 @@ namespace ForexAPITester
 
         }
 
-        private void loadData(DateTime start1, DateTime end1)
+        private void loadData(DateTime start1, DateTime end1, bool firstOnly = false)
         {
             start1 = start1.AddMinutes(-1);
             end1 = end1.AddMinutes(-1);
@@ -597,7 +604,17 @@ namespace ForexAPITester
             }
 
             //Logger.WriteLog($"Load Start:{start1.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss")} End:{end1.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss")}");
-            var response = APIHelper.makeRequest($"https://api.ig.com/gateway/deal/prices/{txtEpic.Text}?resolution=MINUTE_{minutesToCheck}&from={start1.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:00")}&to={end1.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:00")}", apiKey, xToken, cstToken, Method.GET);
+            IRestResponse response;
+            if (firstOnly)
+            {
+                response = APIHelper.makeRequest($"https://api.ig.com/gateway/deal/prices/{txtEpic.Text}?resolution=MINUTE_{minutesToCheck}", apiKey, xToken, cstToken, Method.GET);
+            }
+            else
+            {
+                response = APIHelper.makeRequest($"https://api.ig.com/gateway/deal/prices/{txtEpic.Text}?resolution=MINUTE_{minutesToCheck}&from={start1.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:00")}&to={end1.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:00")}", apiKey, xToken, cstToken, Method.GET);
+            }
+            //var response1 = APIHelper.makeRequest($"https://api.ig.com/gateway/deal/prices/{txtEpic.Text}?resolution=MINUTE_{minutesToCheck}", apiKey, xToken, cstToken, Method.GET);
+
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var prices = JsonConvert.DeserializeObject<PriceData>(response.Content);
@@ -618,40 +635,49 @@ namespace ForexAPITester
                     }
                 }
                 PriceView previousPrice = priceViews.LastOrDefault() ?? new PriceView() { SnapshotTime = String.Empty };
+
                 foreach (var price in prices.prices)
                 {
-                    var pview = new PriceView()
+                    //if (firstOnly)
+                    //{
+                    //    //firstOnly = false;
+                    //    //continue;
+                    //}
+                    //else
                     {
-                        AskClose = price.closePrice.ask,
-                        AskHigh = price.highPrice.ask,
-                        AskLow = price.lowPrice.ask,
-                        AskOpen = price.openPrice.ask,
-                        //BidClose = price.closePrice.bid,
-                        //BidHigh = price.highPrice.bid,
-                        //BidLow = price.lowPrice.bid,
-                        //BidOpen = price.openPrice.bid,
-                        SnapshotTime = price.snapshotTime
-                    };
-                    if (String.IsNullOrWhiteSpace(previousPrice.SnapshotTime))
-                    {
-                        pview.Ask2BarReversal = false;
-                        //pview.Bid2BarReversal = false;
+                        var pview = new PriceView()
+                        {
+                            AskClose = price.closePrice.ask,
+                            AskHigh = price.highPrice.ask,
+                            AskLow = price.lowPrice.ask,
+                            AskOpen = price.openPrice.ask,
+                            //BidClose = price.closePrice.bid,
+                            //BidHigh = price.highPrice.bid,
+                            //BidLow = price.lowPrice.bid,
+                            //BidOpen = price.openPrice.bid,
+                            SnapshotTime = price.snapshotTime
+                        };
+                        if (String.IsNullOrWhiteSpace(previousPrice.SnapshotTime))
+                        {
+                            pview.Ask2BarReversal = false;
+                            //pview.Bid2BarReversal = false;
+                        }
+                        else
+                        {
+                            pview.Ask2BarReversal = ((previousPrice.AskUpDown != pview.AskUpDown) && (previousPrice.AskUpDown != Library.None && pview.AskUpDown != Library.None));
+                            //pview.Bid2BarReversal = previousPrice.BidUpDown != pview.BidUpDown;
+                        }
+                        if (priceViews.Exists(p => DateTime.Compare(p.SnapshotDateTime, pview.SnapshotDateTime) == 0))
+                        {
+                            var pv = priceViews.FirstOrDefault(p => p.SnapshotDateTime == pview.SnapshotDateTime);
+                            Logger.WriteLog($"Duplicate priceview:Time (n):{pview.SnapshotDateTime} - High:{pview.AskHigh} Low:{pview.AskLow} Open:{pview.AskOpen} Close:{pview.AskClose}");
+                            Logger.WriteLog($"Duplicate priceview:Time (o):{pv.SnapshotDateTime} - High:{pv.AskHigh} Low:{pv.AskLow} Open:{pv.AskOpen} Close:{pv.AskClose}");
+                            priceViews.RemoveAll(p => DateTime.Compare(p.SnapshotDateTime, pview.SnapshotDateTime) == 0);
+                        }
+                        Logger.WriteData(JsonConvert.SerializeObject(pview));
+                        priceViews.Add(pview);
+                        previousPrice = pview;
                     }
-                    else
-                    {
-                        pview.Ask2BarReversal = previousPrice.AskUpDown != pview.AskUpDown;
-                        //pview.Bid2BarReversal = previousPrice.BidUpDown != pview.BidUpDown;
-                    }
-                    if (priceViews.Exists(p => DateTime.Compare(p.SnapshotDateTime, pview.SnapshotDateTime) == 0))
-                    {
-                        var pv = priceViews.FirstOrDefault(p => p.SnapshotDateTime == pview.SnapshotDateTime);
-                        Logger.WriteLog($"Duplicate priceview:Time (n):{pview.SnapshotDateTime} - High:{pview.AskHigh} Low:{pview.AskLow} Open:{pview.AskOpen} Close:{pview.AskClose}");
-                        Logger.WriteLog($"Duplicate priceview:Time (o):{pv.SnapshotDateTime} - High:{pv.AskHigh} Low:{pv.AskLow} Open:{pv.AskOpen} Close:{pv.AskClose}");
-                        priceViews.RemoveAll(p => DateTime.Compare(p.SnapshotDateTime, pview.SnapshotDateTime) == 0);
-                    }
-                    Logger.WriteData(JsonConvert.SerializeObject(pview));
-                    priceViews.Add(pview);
-                    previousPrice = pview;
 
                 }
                 radChartView1.Refresh();
@@ -673,7 +699,7 @@ namespace ForexAPITester
                 radChartView1.Series.Clear();
                 radChartView1.Series.Add(oSeries);
                 BindingSource source = new BindingSource();
-                source.DataSource = priceViews;
+                source.DataSource = priceViews.OrderByDescending(p => p.SnapshotDateTime);
                 dataGridView1.DataSource = source;
 
             }
@@ -744,14 +770,15 @@ namespace ForexAPITester
                         if (last.AskUpDown == Library.UpBar && (relationToCheck == Relations.Both || relationToCheck == Relations.UpOnly))
                         {
                             //mean probe closed up
-                            probe = SignalHelper.findRelated(Library.DownBar, pViews, probeWindowMinutes);
+                            probe = SignalHelper.FindRelated(Library.DownBar, pViews, probeWindowMinutes);
                         }
-                        else if (relationToCheck == Relations.Both || relationToCheck == Relations.DownOnly)
+                        else if (last.AskUpDown == Library.DownBar && (relationToCheck == Relations.Both || relationToCheck == Relations.DownOnly))
                         {
-                            probe = SignalHelper.findRelated(Library.UpBar, pViews, probeWindowMinutes);
+                            probe = SignalHelper.FindRelated(Library.UpBar, pViews, probeWindowMinutes);
                         }
                         if (probe.IsDownProbe || probe.IsUpProbe)
                         {
+                            checkProbeQualification(probe, priceViews.OrderBy(p => p.SnapshotDateTime), filterWindowMinutes);
                             allProbes.Add(probe);
                         }
                         //allProbes.AddRange(pViews.Where(p => p.IsDownProbe || p.IsUpProbe));
@@ -798,7 +825,7 @@ namespace ForexAPITester
             //    timeStart.Value = DateTime.UtcNow; //.AddMinutes(minutesToCheck * (-1));
             //}
             timeStart.Value = timeStart1.Value;
-            timeEnd.Value = DateTime.Now;
+            timeEnd.Value = DateTime.Now.AddMinutes(-1);
             if (timeStart.Value < DateTime.Now.AddMinutes(-1))
             {
                 //means collect some previous data until now then carry on with current collection
@@ -823,7 +850,7 @@ namespace ForexAPITester
         {
             timer1.Stop();
             minutesToCheck = int.Parse(cboInterval.SelectedItem.ToString());
-            timer1.Interval = (int)TimeSpan.FromMinutes(minutesToCheck).TotalMilliseconds;
+            //timer1.Interval = (int)TimeSpan.FromMinutes(minutesToCheck).TotalMilliseconds;
             btnClear_Click(this, new EventArgs());
             if (!(sender is ComboBox))
             {
@@ -891,7 +918,7 @@ namespace ForexAPITester
                     }
                     else
                     {
-                        pview.Ask2BarReversal = previousPrice.AskUpDown != pview.AskUpDown;
+                        pview.Ask2BarReversal = (previousPrice.AskUpDown != pview.AskUpDown && (previousPrice.AskUpDown != Library.None && pview.AskUpDown != Library.None));
                         //pview.Bid2BarReversal = previousPrice.BidUpDown != pview.BidUpDown;
                     }
                     switchViews.Add(pview);
@@ -1008,7 +1035,7 @@ namespace ForexAPITester
                 stopDistance = int.Parse(txtStopDistance.Text),
                 limitDistance = int.Parse(txtLimitDistance.Text)
             };
-            var tradeResponse = APIHelper.makeTradeRequest(tradePositionUrl, tradeApiKey, tradeXToken, tradeCstToken, tradeReq);
+            var tradeResponse = APIHelper.MakeTradeRequest(tradePositionUrl, tradeApiKey, tradeXToken, tradeCstToken, tradeReq);
             if (tradeResponse.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var dealRef = JsonConvert.DeserializeObject<TradeResponse>(tradeResponse.Content);
@@ -1026,7 +1053,7 @@ namespace ForexAPITester
                 var position = JsonConvert.DeserializeObject<TradePosition>(response.Content);
                 var positionToCloseDeal = position.positions.Where(p => p.position.dealReference == txtDealReference.Text).FirstOrDefault();
                 var dealIdToClose = positionToCloseDeal.position.dealId;
-                var responseClose = APIHelper.closeTradeRequest("https://demo-api.ig.com/gateway/deal/positions/otc", tradeApiKey, tradeXToken, tradeCstToken, new CloseTradeRequest()
+                var responseClose = APIHelper.CloseTradeRequest("https://demo-api.ig.com/gateway/deal/positions/otc", tradeApiKey, tradeXToken, tradeCstToken, new CloseTradeRequest()
                 {
                     dealId = dealIdToClose,
                     direction = cboDirection.SelectedItem.ToString() == "BUY" ? "SELL" : "BUY",
@@ -1039,15 +1066,17 @@ namespace ForexAPITester
         {
 
             BindingSource source = new BindingSource();
-            source.DataSource = allProbes.Distinct(new PriceViewComparer()).Select(p => new { Time = p.TimeCategory, UpDown = p.IsUpProbe ? "U" : "D", Relations = p.ProbeRelations });
+            source.DataSource = allProbes.Distinct(new PriceViewComparer()).Select(p => new { Time = p.TimeCategory, UpDown = p.IsUpProbe ? "U" : "D", Relations = p.ProbeRelations, Qualified = p.ProbeQualified, Qualifications = p.ProbeQualifications }).OrderByDescending(p => p.Time);
             dataGridView2.Refresh();
             dataGridView2.DataSource = source;
 
             if (allProbes.Count > 0)
             {
-                dataGridView2.Columns[0].Width = 60;
+                dataGridView2.Columns[0].Width = 40;
                 dataGridView2.Columns[1].Width = 30;
-                dataGridView2.Columns[2].Width = 100;
+                dataGridView2.Columns[2].Width = 90;
+                dataGridView2.Columns[3].Width = 30;
+                dataGridView2.Columns[4].Width = 60;
             }
 
         }
@@ -1076,5 +1105,69 @@ namespace ForexAPITester
         {
             relationToCheck = Relations.UpOnly;
         }
+
+        private void checkProbeQualification(PriceView probe, IEnumerable<PriceView> pViews, int filterWindowMins)
+        {
+            var relationTimes = probe.ProbeRelations.Split(',');
+            if (relationTimes.Length == 3)
+            {
+                var priceViewPair = new PriceViewPair(pViews.First(p => p.TimeCategory == relationTimes[0]), pViews.SkipWhile(p => p.TimeCategory != relationTimes[0]).Skip(1).First());
+                //check of qualification, if succeeds, then good else look in the remaining pairs
+                probe = SignalHelper.CheckQualification(priceViewPair, probe, pViews, filterWindowMins);
+                if (!probe.ProbeQualified)
+                {
+                    priceViewPair = new PriceViewPair(pViews.First(p => p.TimeCategory == relationTimes[1]), pViews.SkipWhile(p => p.TimeCategory != relationTimes[1]).Skip(1).First());
+                    probe = SignalHelper.CheckQualification(priceViewPair, probe, pViews, filterWindowMins);
+                    if (!probe.ProbeQualified)
+                    {
+                        priceViewPair = new PriceViewPair(pViews.First(p => p.TimeCategory == relationTimes[2]), pViews.SkipWhile(p => p.TimeCategory != relationTimes[2]).Skip(1).First());
+                        probe = SignalHelper.CheckQualification(priceViewPair, probe, pViews, filterWindowMins);
+                    }
+                }
+            }
+
+        }
+
+
+        private void cboFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            filterWindowMinutes = int.Parse(cboFilter.SelectedItem.ToString()) * (-1);
+        }
+
+        private void btnLoginCreds_Click(object sender, EventArgs e)
+        {
+            LoginCreds loginForm = new LoginCreds();
+            loginForm.ShowDialog();
+            readCredentials();
+        }
+        private void readCredentials()
+        {
+            APICredentials dataCredentials = new APICredentials();
+            APICredentials tradeCredentials = new APICredentials();
+            Library.ReadCredentials(ref dataCredentials, ref tradeCredentials);
+            userName = dataCredentials.UserName;
+            password = dataCredentials.Password;
+            apiKey = dataCredentials.APIKey;
+        }
+        private void readTokens()
+        {
+            userData = new FileStream(Application.UserAppDataPath + "\\appdata.txt", FileMode.OpenOrCreate);
+            string sessionData = String.Empty;
+            using (StreamReader userReader = new StreamReader(userData))
+            {
+                sessionData = userReader.ReadLine();
+                if (!String.IsNullOrWhiteSpace(sessionData))
+                {
+                    cstToken = sessionData;
+                }
+                sessionData = userReader.ReadLine();
+                if (!String.IsNullOrWhiteSpace(sessionData))
+                {
+                    xToken = sessionData;
+                }
+            }
+
+        }
+
     }
 }
