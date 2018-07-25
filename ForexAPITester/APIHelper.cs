@@ -11,8 +11,9 @@ namespace ForexAPITester
     public static class APIHelper
     {
 
-        public static bool LoginToAccount(string Url, string apiKey, Login login, out string xToken, out string cstToken, out AccountMain acct)
+        public static bool LoginToAccount(string Url, string apiKey, Login login, out string xToken, out string cstToken, out AccountMain acct, out string loginmessage)
         {
+            loginmessage = string.Empty;
             bool retVal = false;
             xToken = string.Empty;
             cstToken = string.Empty;
@@ -39,6 +40,7 @@ namespace ForexAPITester
             }
             else
             {
+                loginmessage = response.Content;
                 retVal = false;
             }
             return retVal;

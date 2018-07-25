@@ -36,5 +36,23 @@ namespace ForexAPITester
             }
             this.Close();
         }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void LoginCreds_Shown(object sender, EventArgs e)
+        {
+            APICredentials dataCredentials = new APICredentials();
+            APICredentials tradeCredentials = new APICredentials();
+            Library.ReadCredentials(ref dataCredentials, ref tradeCredentials);
+            txtUsername.Text = dataCredentials.UserName;
+            txtPassword.Text = dataCredentials.Password;
+            txtLiveAPIKey.Text = dataCredentials.APIKey;
+            txtTradeUserName.Text = tradeCredentials.UserName;
+            txtTradePassword.Text = tradeCredentials.Password;
+            txtDemoAPIKey.Text = tradeCredentials.APIKey;
+        }
     }
 }

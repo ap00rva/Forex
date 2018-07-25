@@ -41,6 +41,7 @@
             this.txtTradeUserName = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.txtTradePassword = new System.Windows.Forms.TextBox();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -89,7 +90,7 @@
             // 
             this.txtLiveAPIKey.Location = new System.Drawing.Point(130, 78);
             this.txtLiveAPIKey.Name = "txtLiveAPIKey";
-            this.txtLiveAPIKey.Size = new System.Drawing.Size(192, 20);
+            this.txtLiveAPIKey.Size = new System.Drawing.Size(449, 20);
             this.txtLiveAPIKey.TabIndex = 5;
             // 
             // label4
@@ -105,12 +106,13 @@
             // 
             this.txtDemoAPIKey.Location = new System.Drawing.Point(130, 163);
             this.txtDemoAPIKey.Name = "txtDemoAPIKey";
-            this.txtDemoAPIKey.Size = new System.Drawing.Size(193, 20);
+            this.txtDemoAPIKey.Size = new System.Drawing.Size(449, 20);
             this.txtDemoAPIKey.TabIndex = 7;
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(247, 226);
+            this.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnSave.Location = new System.Drawing.Point(504, 230);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 8;
@@ -151,11 +153,23 @@
             this.txtTradePassword.Size = new System.Drawing.Size(193, 20);
             this.txtTradePassword.TabIndex = 12;
             // 
+            // btnCancel
+            // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(423, 230);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 13;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
             // LoginCreds
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(334, 261);
+            this.ClientSize = new System.Drawing.Size(591, 278);
+            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.txtTradePassword);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txtTradeUserName);
@@ -173,6 +187,7 @@
             this.MinimizeBox = false;
             this.Name = "LoginCreds";
             this.Text = "LoginCreds";
+            this.Shown += new System.EventHandler(this.LoginCreds_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -193,5 +208,6 @@
         private System.Windows.Forms.TextBox txtTradeUserName;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtTradePassword;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

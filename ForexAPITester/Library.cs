@@ -26,6 +26,11 @@ namespace ForexAPITester
             Buy = 1,
             Sell = 2
         }
+        public enum SARCloseOptions
+        {
+            CloseNow = 1,
+            CloseLater = 2
+        }
         public static void ReadCredentials(ref APICredentials DataCredentials, ref APICredentials TradeCredentials)
         {
             var userData = new FileStream(Application.UserAppDataPath + "\\appcreds.txt", FileMode.OpenOrCreate);
