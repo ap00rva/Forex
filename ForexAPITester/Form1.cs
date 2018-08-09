@@ -38,14 +38,17 @@ namespace ForexAPITester
         string minutesToCheckString = "";
         int signallingWindowMinutes = -60;
         int probeWindowMinutes = 20;
-        int filterWindowMinutes = -20;
+        int filterWindowMinutes = -25;
         string logFile;
         string userName = ""; //"apoorvadixit";
         string password = ""; //"Jaisai64!";
         string tradeUserName = "";
         string tradePassword = "";
         Relations relationToCheck = Relations.Both;
-        string tradeUrl = "";
+        DateTime? probeTradeTime = null;
+        TradeDirection probeTradeDirection = TradeDirection.Buy;
+        decimal probeAmount = 0;
+        bool switchHasBeenReset = false;
         public Form1()
         {
             InitializeComponent();
@@ -236,11 +239,11 @@ namespace ForexAPITester
                 btnFindDetailRelated.Visible = false;
                 rdoUp.Visible = false;
                 rdoDown.Visible = false;
-                tabControl1.TabPages.RemoveAt(3);
+                //tabControl1.TabPages.RemoveAt(3);
 
 #endif
                 //timeStart.MinDate = DateTime.UtcNow.AddHours(-8);
-                cboFilter.Value = 20;
+                cboFilter.Value = 25;
                 logFile = $"log{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}{DateTime.Now.Hour}{DateTime.Now.Minute}.txt";
                 timer1.Interval = (int)TimeSpan.FromMinutes(1).TotalMilliseconds;
                 //timer1.Start();
@@ -254,7 +257,6 @@ namespace ForexAPITester
                 timeStart1.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 6, 0, 0);
                 timeStart.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 6, 0, 0);
                 timeEnd.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 19, 0, 0);
-
             }
             catch (IOException ex)
             {
@@ -293,7 +295,7 @@ namespace ForexAPITester
                 SignalHelper.FindRelated(Library.DownBar, priceViews);
             }
         }
-
+        #region Old Code
         //private void findRelated(string reversalType, List<PriceView> pViews)
         //{
         //    List<PriceView> relatedBars = new List<PriceView>();
@@ -503,6 +505,8 @@ namespace ForexAPITester
         //            || currentPair[1].AskHigh > Math.Max(previousPair[0].AskHigh, previousPair[1].AskHigh)) && (currentPair[1].AskClose <= Math.Max(previousPair[0].AskHigh, previousPair[1].AskHigh));
         //    }
         //}
+        #endregion
+
         private bool isRowTobeColoured(List<PriceView> priceViews, DataGridViewRow row)
         {
             return priceViews.Any(p => p.SnapshotTime == row.Cells[0].Value.ToString());
@@ -547,7 +551,35 @@ namespace ForexAPITester
                 if (priceViews.Any())
                 {
 
-                    var last = priceViews.Last();
+                    var last = priceViews.OrderBy(p => p.SnapshotDateTime).Last();
+                    #region  Switch related processing
+                    if (SwitchHelper.IsSwitchSearchInProgress())
+                    {
+                        if (SwitchHelper.IsSwitchConditionMet(last))
+                        {
+                            SetSwitch();
+                        }
+                    }
+                    else
+                    {
+                        if (!switchHasBeenReset)
+                        {
+                            ResetSwitch();
+                        }
+                    }
+                    if (probeTradeTime != null)
+                    {
+                        //future place trade has been set
+                        if (IsTimeForProbeTrade(last))
+                        {
+                            if (IsConditionMetForProbeTrade(last))
+                            {
+                                TradeHelper.PlaceTrade(txtEpic.Text, probeTradeDirection, double.Parse(txtSize.Text), int.Parse(txtStopDistance.Text), int.Parse(txtLimitDistance.Text), !rdoBoth.Checked, (int)txtMaxTrades.Value);
+                            }
+                            probeTradeTime = null;
+                        }
+                    }
+                    #endregion
                     start1 = last.SnapshotDateTime.AddMinutes(signallingWindowMinutes);
                     var pViews = priceViews.Where(p => p.SnapshotDateTime >= start1).OrderBy(p => p.SnapshotDateTime).ToList();
                     var probe = new PriceView();
@@ -978,6 +1010,7 @@ namespace ForexAPITester
         private void cboInterval_SelectedIndexChanged(object sender, EventArgs e)
         {
             btnResetInterval_Click(cboInterval, new EventArgs());
+            sendStatus();
         }
 
         private void btnSetSwitch_Click(object sender, EventArgs e)
@@ -1088,12 +1121,12 @@ namespace ForexAPITester
 
                 oSeries.DataPoints.Add(new OhlcDataPoint((double)pview.AskOpen, (double)pview.AskHigh, (double)pview.AskLow, (double)pview.AskClose, pview.TimeCategory));
             }
-            LinearAxis linearAxis1 = (LinearAxis)radChartView2.Axes[1];
-            linearAxis1.Minimum = (double)switchViews.Min(p => p.AskLow) - 2;
-            linearAxis1.Maximum = (double)switchViews.Max(p => p.AskHigh) + 2;
+            //LinearAxis linearAxis1 = (LinearAxis)radChartView2.Axes[1];
+            //linearAxis1.Minimum = (double)switchViews.Min(p => p.AskLow) - 2;
+            //linearAxis1.Maximum = (double)switchViews.Max(p => p.AskHigh) + 2;
 
-            radChartView2.Series.Clear();
-            radChartView2.Series.Add(oSeries);
+            //radChartView2.Series.Clear();
+            //radChartView2.Series.Add(oSeries);
 
         }
 
@@ -1121,65 +1154,54 @@ namespace ForexAPITester
         private void btnLoginTrade_Click(object sender, EventArgs e)
         {
             string loginMessage = string.Empty;
-            if (APIHelper.LoginToAccount("https://demo-api.ig.com/gateway/deal/session", tradeApiKey, new Login()
-            {
-                identifier = tradeUserName,
-                password = tradePassword,
-                encryptedPassword = null
-            }, out tradeXToken, out tradeCstToken, out acctTrade, out loginMessage))
-            {
-                txtLog.Text = "Login successfull";
-                var accountDetails = APIHelper.makeRequest("https://demo-api.ig.com/gateway/deal/accounts", tradeApiKey, tradeXToken, tradeCstToken, Method.GET, "1");
-                var tradeAccountInfo = JsonConvert.DeserializeObject<TradingAccounts>(accountDetails.Content);
-                lblBalance.Text = tradeAccountInfo.accounts.Where(a => a.accountType == "SPREADBET").FirstOrDefault()?.balance?.balance.ToString();
-            }
-            else
-            {
-                txtLog.Text = $"Error in login: {loginMessage} ";
-            }
+            var tradeAccountInfo = TradeHelper.GetTradingAccount();
+            lblBalance.Text = tradeAccountInfo.accounts.Where(a => a.accountType == "SPREADBET").FirstOrDefault()?.balance?.balance.ToString();
 
         }
 
         private void btnPlaceTrade_Click(object sender, EventArgs e)
         {
-            var tradePositionUrl = "https://demo-api.ig.com/gateway/deal/positions/otc";
-            TradeRequest tradeReq = new TradeRequest()
-            {
-                epic = txtEpic.Text,
-                direction = cboDirection.SelectedItem.ToString(),
-                size = float.Parse(txtSize.Text),
-                stopDistance = int.Parse(txtStopDistance.Text),
-                limitDistance = int.Parse(txtLimitDistance.Text)
-            };
-            var tradeResponse = APIHelper.MakeTradeRequest(tradePositionUrl, tradeApiKey, tradeXToken, tradeCstToken, tradeReq);
-            if (tradeResponse.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                var dealRef = JsonConvert.DeserializeObject<TradeResponse>(tradeResponse.Content);
-                txtDealReference.Text = dealRef.dealReference;
-            }
-            else
-            {
-                txtLog.Text = tradeResponse.Content;
-            }
+            txtDealReference.Text = TradeHelper.PlaceTrade(txtEpic.Text, cboDirection.SelectedItem.ToString() == "BUY" ? TradeDirection.Buy : TradeDirection.Sell, float.Parse(txtSize.Text), int.Parse(txtStopDistance.Text), int.Parse(txtLimitDistance.Text), true, 1);
+            //var tradePositionUrl = "https://demo-api.ig.com/gateway/deal/positions/otc";
+            //TradeRequest tradeReq = new TradeRequest()
+            //{
+            //    epic = txtEpic.Text,
+            //    direction = cboDirection.SelectedItem.ToString(),
+            //    size = float.Parse(txtSize.Text),
+            //    stopDistance = int.Parse(txtStopDistance.Text),
+            //    limitDistance = int.Parse(txtLimitDistance.Text)
+            //};
+            //var tradeResponse = APIHelper.MakeTradeRequest(tradePositionUrl, tradeApiKey, tradeXToken, tradeCstToken, tradeReq);
+            //if (tradeResponse.StatusCode == System.Net.HttpStatusCode.OK)
+            //{
+            //    var dealRef = JsonConvert.DeserializeObject<TradeResponse>(tradeResponse.Content);
+            //    txtDealReference.Text = dealRef.dealReference;
+            //}
+            //else
+            //{
+            //    txtLog.Text = tradeResponse.Content;
+            //}
 
         }
 
         private void btnCloseDeal_Click(object sender, EventArgs e)
         {
-            string url = "https://demo-api.ig.com/gateway/deal/positions";
-            var response = APIHelper.makeRequest(url, tradeApiKey, tradeXToken, tradeCstToken, Method.GET, "2");
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                var position = JsonConvert.DeserializeObject<TradePosition>(response.Content);
-                var positionToCloseDeal = position.positions.Where(p => p.position.dealReference == txtDealReference.Text).FirstOrDefault();
-                var dealIdToClose = positionToCloseDeal.position.dealId;
-                var responseClose = APIHelper.CloseTradeRequest("https://demo-api.ig.com/gateway/deal/positions/otc", tradeApiKey, tradeXToken, tradeCstToken, new CloseTradeRequest()
-                {
-                    dealId = dealIdToClose,
-                    direction = cboDirection.SelectedItem.ToString() == "BUY" ? "SELL" : "BUY",
-                    size = float.Parse(txtSize.Text)
-                });
-            }
+            //string url = "https://demo-api.ig.com/gateway/deal/positions";
+            //var response = APIHelper.makeRequest(url, tradeApiKey, tradeXToken, tradeCstToken, Method.GET, "2");
+            //if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            //{
+            //    var position = JsonConvert.DeserializeObject<TradePosition>(response.Content);
+            //    var positionToCloseDeal = position.positions.Where(p => p.position.dealReference == txtDealReference.Text).FirstOrDefault();
+            //    var dealIdToClose = positionToCloseDeal.position.dealId;
+            //    var responseClose = APIHelper.CloseTradeRequest("https://demo-api.ig.com/gateway/deal/positions/otc", tradeApiKey, tradeXToken, tradeCstToken, new CloseTradeRequest()
+            //    {
+            //        dealId = dealIdToClose,
+            //        direction = cboDirection.SelectedItem.ToString() == "BUY" ? "SELL" : "BUY",
+            //        size = float.Parse(txtSize.Text)
+            //    });
+            //}
+
+            TradeHelper.CloseTrade(txtDealReference.Text);
         }
 
         private void rebindProbes()
@@ -1231,16 +1253,23 @@ namespace ForexAPITester
         private void cboSignallingMinutes_SelectedIndexChanged(object sender, EventArgs e)
         {
             signallingWindowMinutes = int.Parse(cboSignallingMinutes.SelectedItem.ToString()) * (-1);
+            sendStatus();
         }
 
         private void cboProbeWindowMinutes_SelectedIndexChanged(object sender, EventArgs e)
         {
             probeWindowMinutes = int.Parse(cboProbeWindowMinutes.SelectedItem.ToString());
+            sendStatus();
         }
 
         private void rdoBoth_CheckedChanged(object sender, EventArgs e)
         {
             relationToCheck = Relations.Both;
+            if (rdoBoth.Checked)
+            {
+                sendStatus();
+            }
+
         }
 
         private void rdoDownOnly_CheckedChanged(object sender, EventArgs e)
@@ -1256,6 +1285,11 @@ namespace ForexAPITester
                     MessageBox.Show("Will close all open trades");
                 }
             }
+            if (rdoDownOnly.Checked)
+            {
+                sendStatus();
+            }
+
         }
 
         private void rdoUpOnly_CheckedChanged(object sender, EventArgs e)
@@ -1270,6 +1304,11 @@ namespace ForexAPITester
                     MessageBox.Show("Will close all open trades");
                 }
             }
+            if (rdoUpOnly.Checked)
+            {
+                sendStatus();
+            }
+
         }
 
         private void checkProbeQualification(PriceView probe, IEnumerable<PriceView> pViews, int filterWindowMins)
@@ -1298,6 +1337,7 @@ namespace ForexAPITester
         private void cboFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             filterWindowMinutes = int.Parse(cboFilter.Value.ToString()) * (-1);
+            sendStatus();
         }
 
         private void btnLoginCreds_Click(object sender, EventArgs e)
@@ -1404,6 +1444,169 @@ namespace ForexAPITester
             {
                 TradeHelper.CloseOptions = SARCloseOptions.CloseNow;
             }
+        }
+
+        private void sendStatus()
+        {
+#if !DEBUG
+            if (chkTrade.Checked)
+            {
+                TradeState state = new TradeState()
+                {
+                    Interval = cboInterval.Text,
+                    SignallingWindow = cboSignallingMinutes.Text,
+                    ProbeWindow = cboProbeWindowMinutes.Text,
+                    FilterWindow = cboFilter.Value.ToString(),
+                    Relations = rdoBoth.Checked ? "Both" : (rdoUp.Checked ? "Up" : "Down"),
+                    LimitDistance = int.Parse(txtLimitDistance.Text),
+                    StopDistance = int.Parse(txtStopDistance.Text),
+                    Size = decimal.Parse(txtSize.Text),
+                    Epic = txtEpic.Text
+                };
+                JsonSerializerSettings settings = new JsonSerializerSettings();
+                settings.Formatting = Formatting.Indented;
+
+                Task.Run(() => Library.SendStatusEmail(Newtonsoft.Json.JsonConvert.SerializeObject(state, settings)));
+
+            }
+#endif
+        }
+
+        private void chkUseLiveAccount_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkUseLiveAccount.Checked)
+            {
+                LiveCredentials liveCreds = new LiveCredentials();
+                liveCreds.ShowDialog();
+                if (!liveCreds.IsConfirmed)
+                {
+                    chkUseLiveAccount.Checked = false;
+                    TradeHelper.TradeUrl = Library.DemoTradingUrl;
+                }
+                else
+                {
+                    TradeHelper.TradeUrl = LiveTradingUrl;
+
+                }
+            }
+            else
+            {
+                TradeHelper.TradeUrl = Library.DemoTradingUrl;
+
+            }
+        }
+
+        private void txtAmountToCheck_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void txtAmountToCheck_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnStartSwitchSearch_Click(object sender, EventArgs e)
+        {
+            //once the switch search has started, set the form level option that switch search is on
+            //on timer, look if the switch params are breached
+            //if they are then turn on the automated trade, set the directional switch (should close existing trades, if needed)
+            //then also check if a flash trade needs to be put, if so, then put a trade in the direction chosen and look for the next hour
+            //if the hourly trade also breaches the conditions, then put the probe trade as well
+            //all this within the expiry period
+            //once action has taken place, set the label, turn off options, clear the textbox and radio(optional), ie perform reset
+            decimal amountToCheck = 0;
+            if (!decimal.TryParse(txtAmountToCheck.Text, out amountToCheck))
+            {
+                MessageBox.Show("Incrrect price to check", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                label30.Text = "Switch search is in progress...";
+                SwitchHelper.PriceToCheck = amountToCheck;
+                SwitchHelper.SwitchSearchStartTime = DateTime.Now;
+                SwitchHelper.SwitchSearchEndTime = SwitchHelper.SwitchSearchStartTime.AddMinutes(double.Parse(cboSwitchCheckValidity.Text));
+                SwitchHelper.SwitchDirection = (rdoSwitchUp.Checked ? TradeDirection.Sell : TradeDirection.Buy);
+                SwitchHelper.SwitchStarted = true;
+                txtAmountToCheck.Enabled = false;
+                rdoSwitchUp.Enabled = false;
+                rdoSwitchDown.Enabled = false;
+                chkPerformFlashTrade.Enabled = false;
+                chkPerformProbeTrade.Enabled = false;
+                cboSwitchCheckValidity.Enabled = false;
+            }
+        }
+        private void ResetSwitch()
+        {
+            txtAmountToCheck.Text = string.Empty;
+            rdoSwitchUp.Checked = false;
+            rdoSwitchDown.Checked = false;
+            chkPerformFlashTrade.Checked = false;
+            chkPerformProbeTrade.Checked = false;
+            label30.Text = string.Empty;
+            SwitchHelper.PriceToCheck = 0;
+            SwitchHelper.SwitchSearchStartTime = DateTime.Today.AddDays(100);
+            SwitchHelper.SwitchSearchEndTime = DateTime.Today.AddDays(100);
+            switchHasBeenReset = true;
+            txtAmountToCheck.Enabled = true;
+            rdoSwitchUp.Enabled = true;
+            rdoSwitchDown.Enabled = true;
+            chkPerformFlashTrade.Enabled = true;
+            chkPerformProbeTrade.Enabled = true;
+            cboSwitchCheckValidity.Enabled = true;
+        }
+        private void SetSwitch()
+        {
+            chkTrade.Checked = true;
+            if (SwitchHelper.SwitchDirection == TradeDirection.Sell)
+            {
+                rdoUpOnly.Checked = true;
+                //rdoUpOnly_CheckedChanged(this, new EventArgs());
+            }
+            else if (SwitchHelper.SwitchDirection == TradeDirection.Buy)
+            {
+                rdoDownOnly.Checked = true;
+                //rdoDownOnly_CheckedChanged(this, new EventArgs());
+            }
+            if (chkPerformFlashTrade.Checked)
+            {
+                TradeHelper.PlaceTrade(txtEpic.Text, SwitchHelper.SwitchDirection, double.Parse(txtSize.Text), int.Parse(txtStopDistance.Text), int.Parse(txtLimitDistance.Text), !rdoBoth.Checked, (int)txtMaxTrades.Value);
+            }
+            if (chkPerformProbeTrade.Checked)
+            {
+                //set trade to take place on the next hour
+                probeTradeTime = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, DateTime.Now.AddHours(1).Hour, 0, 0);
+                probeTradeDirection = SwitchHelper.SwitchDirection;
+                probeAmount = SwitchHelper.PriceToCheck;
+            }
+            switchHasBeenReset = true;
+            ResetSwitch();
+        }
+        private bool IsTimeForProbeTrade(PriceView CurrentPriceData)
+        {
+            DateTime probeTrade = DateTime.Now.AddYears(1);
+            if (probeTradeTime != null)
+            {
+                probeTrade = (DateTime)probeTradeTime;
+            }
+            return probeTrade.Year == DateTime.Now.Year && probeTrade.Month == DateTime.Now.Month && probeTrade.Day == DateTime.Now.Day && probeTrade.Hour == DateTime.Now.Hour && CurrentPriceData.SnapshotDateTime.Minute == 0;
+        }
+
+        private bool IsConditionMetForProbeTrade(PriceView CurrentPriceData)
+        {
+            if (probeTradeDirection == TradeDirection.Buy)
+            {
+                return CurrentPriceData.AskClose >= probeAmount;
+            }
+            else if (probeTradeDirection == TradeDirection.Sell)
+            {
+                return CurrentPriceData.AskClose <= probeAmount;
+            }
+            return false;
+        }
+        private void btnCancelSwitchSearch_Click(object sender, EventArgs e)
+        {
+            ResetSwitch();
         }
     }
 }

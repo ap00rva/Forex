@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SendGrid;
+using SendGrid.Helpers.Mail;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,6 +17,9 @@ namespace ForexAPITester
         public const string None = "None";
 
         public const string ENCRYPTSALT = "7746934bfaa44d72836df556d47770b9";
+
+        public const string LiveTradingUrl = "https://api.ig.com/gateway";
+        public const string DemoTradingUrl = "https://demo-api.ig.com/gateway";
         public enum Relations
         {
             Both = 0,
@@ -71,6 +76,18 @@ namespace ForexAPITester
                     }
                 }
             }
+        }
+
+        public static async Task SendStatusEmail(string MailContent)
+        {
+            var apiKey = "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";
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress("test@example.com", "FXUser");
+            var subject = $"State at:{DateTime.UtcNow}";
+            var to = new EmailAddress("apoorva.dixit@gmail.com", "ADixit");
+            var plainTextContent = MailContent;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, plainTextContent);
+            var response = await client.SendEmailAsync(msg);
         }
 
     }

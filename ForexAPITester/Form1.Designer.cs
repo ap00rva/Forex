@@ -29,20 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle73 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle74 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle75 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             Telerik.WinControls.UI.CartesianArea cartesianArea1 = new Telerik.WinControls.UI.CartesianArea();
             Telerik.WinControls.UI.CategoricalAxis categoricalAxis1 = new Telerik.WinControls.UI.CategoricalAxis();
             Telerik.WinControls.UI.LinearAxis linearAxis1 = new Telerik.WinControls.UI.LinearAxis();
             Telerik.WinControls.UI.OhlcSeries ohlcSeries1 = new Telerik.WinControls.UI.OhlcSeries();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle76 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle77 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle78 = new System.Windows.Forms.DataGridViewCellStyle();
-            Telerik.WinControls.UI.CartesianArea cartesianArea2 = new Telerik.WinControls.UI.CartesianArea();
-            Telerik.WinControls.UI.CategoricalAxis categoricalAxis2 = new Telerik.WinControls.UI.CategoricalAxis();
-            Telerik.WinControls.UI.LinearAxis linearAxis2 = new Telerik.WinControls.UI.LinearAxis();
-            Telerik.WinControls.UI.OhlcSeries ohlcSeries2 = new Telerik.WinControls.UI.OhlcSeries();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnLogin = new System.Windows.Forms.Button();
             this.txtLog = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -76,16 +72,30 @@
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.radChartView1 = new Telerik.WinControls.UI.RadChartView();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.dataGridView4 = new System.Windows.Forms.DataGridView();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.radChartView2 = new Telerik.WinControls.UI.RadChartView();
-            this.btnSetSwitch = new System.Windows.Forms.Button();
+            this.label30 = new System.Windows.Forms.Label();
+            this.btnStartSwitchSearch = new System.Windows.Forms.Button();
+            this.chkPerformProbeTrade = new System.Windows.Forms.CheckBox();
+            this.chkPerformFlashTrade = new System.Windows.Forms.CheckBox();
+            this.cboSwitchCheckValidity = new System.Windows.Forms.ComboBox();
+            this.label29 = new System.Windows.Forms.Label();
+            this.txtAmountToCheck = new System.Windows.Forms.MaskedTextBox();
+            this.label28 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.rdoSwitchDown = new System.Windows.Forms.RadioButton();
             this.rdoSwitchUp = new System.Windows.Forms.RadioButton();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.chkUseLiveAccount = new System.Windows.Forms.CheckBox();
+            this.chkSAR = new System.Windows.Forms.CheckBox();
+            this.grpSAROptions = new System.Windows.Forms.GroupBox();
+            this.rdoSARCloseLater = new System.Windows.Forms.RadioButton();
+            this.rdoSARCloseNow = new System.Windows.Forms.RadioButton();
             this.txtMaxTrades = new System.Windows.Forms.NumericUpDown();
             this.label24 = new System.Windows.Forms.Label();
             this.chkTrade = new System.Windows.Forms.CheckBox();
@@ -109,6 +119,7 @@
             this.btnLoginCreds = new System.Windows.Forms.Button();
             this.label23 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label27 = new System.Windows.Forms.Label();
             this.rdoBoth = new System.Windows.Forms.RadioButton();
             this.rdoDownOnly = new System.Windows.Forms.RadioButton();
             this.rdoUpOnly = new System.Windows.Forms.RadioButton();
@@ -129,31 +140,23 @@
             this.btnResetInterval = new System.Windows.Forms.Button();
             this.timeStart = new System.Windows.Forms.DateTimePicker();
             this.label22 = new System.Windows.Forms.Label();
-            this.dataGridView4 = new System.Windows.Forms.DataGridView();
-            this.label25 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.grpSAROptions = new System.Windows.Forms.GroupBox();
-            this.chkSAR = new System.Windows.Forms.CheckBox();
-            this.rdoSARCloseNow = new System.Windows.Forms.RadioButton();
-            this.rdoSARCloseLater = new System.Windows.Forms.RadioButton();
-            this.label27 = new System.Windows.Forms.Label();
+            this.btnCancelSwitchSearch = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radChartView1)).BeginInit();
             this.tabPage6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.radChartView2)).BeginInit();
             this.tabPage4.SuspendLayout();
+            this.grpSAROptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtMaxTrades)).BeginInit();
             this.tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboFilter)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
-            this.grpSAROptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnLogin
@@ -424,7 +427,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 230);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(770, 681);
+            this.tabControl1.Size = new System.Drawing.Size(685, 681);
             this.tabControl1.TabIndex = 2;
             // 
             // tabPage1
@@ -434,7 +437,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(700, 655);
+            this.tabPage1.Size = new System.Drawing.Size(677, 655);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Chart";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -442,33 +445,33 @@
             // dataGridView2
             // 
             this.dataGridView2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            dataGridViewCellStyle73.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle73.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle73.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle73.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle73.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle73.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle73.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle73;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle74.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle74.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle74.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle74.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle74.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle74.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle74.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView2.DefaultCellStyle = dataGridViewCellStyle74;
-            this.dataGridView2.Location = new System.Drawing.Point(509, 20);
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView2.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridView2.Location = new System.Drawing.Point(441, 20);
             this.dataGridView2.Name = "dataGridView2";
-            dataGridViewCellStyle75.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle75.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle75.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle75.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle75.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle75.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle75.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView2.RowHeadersDefaultCellStyle = dataGridViewCellStyle75;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView2.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView2.RowHeadersVisible = false;
             this.dataGridView2.Size = new System.Drawing.Size(219, 535);
             this.dataGridView2.TabIndex = 1;
@@ -507,7 +510,7 @@
             this.radChartView1.ShowPanZoom = true;
             this.radChartView1.ShowToolTip = true;
             this.radChartView1.ShowTrackBall = true;
-            this.radChartView1.Size = new System.Drawing.Size(481, 578);
+            this.radChartView1.Size = new System.Drawing.Size(413, 578);
             this.radChartView1.TabIndex = 0;
             // 
             // tabPage6
@@ -519,10 +522,39 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(762, 655);
+            this.tabPage6.Size = new System.Drawing.Size(694, 655);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Qualified Probes";
             this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label26.Location = new System.Drawing.Point(389, 7);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(159, 13);
+            this.label26.TabIndex = 3;
+            this.label26.Text = "Counter Directional Probes";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label25.Location = new System.Drawing.Point(7, 7);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(111, 13);
+            this.label25.TabIndex = 2;
+            this.label25.Text = "Directional Probes";
+            // 
+            // dataGridView4
+            // 
+            this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView4.Location = new System.Drawing.Point(392, 34);
+            this.dataGridView4.Name = "dataGridView4";
+            this.dataGridView4.Size = new System.Drawing.Size(363, 613);
+            this.dataGridView4.TabIndex = 1;
+            this.dataGridView4.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dataGridView4_RowPrePaint);
             // 
             // dataGridView3
             // 
@@ -539,7 +571,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(700, 655);
+            this.tabPage2.Size = new System.Drawing.Size(694, 655);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Data";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -548,129 +580,171 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle76.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle76.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle76.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle76.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle76.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle76.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle76.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle76;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle77.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle77.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle77.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle77.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle77.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle77.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle77.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle77;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridView1.Location = new System.Drawing.Point(6, 3);
             this.dataGridView1.Name = "dataGridView1";
-            dataGridViewCellStyle78.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle78.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle78.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle78.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle78.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle78.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle78.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle78;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridView1.Size = new System.Drawing.Size(742, 599);
             this.dataGridView1.TabIndex = 20;
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.radChartView2);
-            this.tabPage3.Controls.Add(this.btnSetSwitch);
+            this.tabPage3.Controls.Add(this.btnCancelSwitchSearch);
+            this.tabPage3.Controls.Add(this.label30);
+            this.tabPage3.Controls.Add(this.btnStartSwitchSearch);
+            this.tabPage3.Controls.Add(this.chkPerformProbeTrade);
+            this.tabPage3.Controls.Add(this.chkPerformFlashTrade);
+            this.tabPage3.Controls.Add(this.cboSwitchCheckValidity);
+            this.tabPage3.Controls.Add(this.label29);
+            this.tabPage3.Controls.Add(this.txtAmountToCheck);
+            this.tabPage3.Controls.Add(this.label28);
             this.tabPage3.Controls.Add(this.label12);
             this.tabPage3.Controls.Add(this.rdoSwitchDown);
             this.tabPage3.Controls.Add(this.rdoSwitchUp);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(700, 655);
+            this.tabPage3.Size = new System.Drawing.Size(677, 655);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Switch";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // radChartView2
+            // label30
             // 
-            this.radChartView2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            cartesianArea2.GridDesign.DrawHorizontalFills = false;
-            cartesianArea2.GridDesign.DrawVerticalFills = false;
-            this.radChartView2.AreaDesign = cartesianArea2;
-            this.radChartView2.AutoScroll = true;
-            categoricalAxis2.IsPrimary = true;
-            categoricalAxis2.LabelFitMode = Telerik.Charting.AxisLabelFitMode.MultiLine;
-            categoricalAxis2.LabelRotationAngle = 300D;
-            categoricalAxis2.Title = "";
-            linearAxis2.AxisType = Telerik.Charting.AxisType.Second;
-            linearAxis2.IsPrimary = true;
-            linearAxis2.LabelRotationAngle = 300D;
-            linearAxis2.TickOrigin = null;
-            linearAxis2.Title = "";
-            this.radChartView2.Axes.AddRange(new Telerik.WinControls.UI.Axis[] {
-            categoricalAxis2,
-            linearAxis2});
-            this.radChartView2.Location = new System.Drawing.Point(217, 12);
-            this.radChartView2.Name = "radChartView2";
-            ohlcSeries2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(179)))), ((int)(((byte)(40)))));
-            ohlcSeries2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(179)))), ((int)(((byte)(40)))));
-            ohlcSeries2.HorizontalAxis = categoricalAxis2;
-            ohlcSeries2.LegendTitle = "DateTime";
-            ohlcSeries2.VerticalAxis = linearAxis2;
-            this.radChartView2.Series.AddRange(new Telerik.WinControls.UI.ChartSeries[] {
-            ohlcSeries2});
-            this.radChartView2.ShowGrid = false;
-            this.radChartView2.ShowPanZoom = true;
-            this.radChartView2.ShowToolTip = true;
-            this.radChartView2.ShowTrackBall = true;
-            this.radChartView2.Size = new System.Drawing.Size(809, 610);
-            this.radChartView2.TabIndex = 30;
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(387, 22);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(41, 13);
+            this.label30.TabIndex = 10;
+            this.label30.Text = "label30";
             // 
-            // btnSetSwitch
+            // btnStartSwitchSearch
             // 
-            this.btnSetSwitch.Location = new System.Drawing.Point(6, 12);
-            this.btnSetSwitch.Name = "btnSetSwitch";
-            this.btnSetSwitch.Size = new System.Drawing.Size(165, 27);
-            this.btnSetSwitch.TabIndex = 3;
-            this.btnSetSwitch.Text = "Set Switch";
-            this.btnSetSwitch.UseVisualStyleBackColor = true;
-            this.btnSetSwitch.Click += new System.EventHandler(this.btnSetSwitch_Click);
+            this.btnStartSwitchSearch.Location = new System.Drawing.Point(216, 206);
+            this.btnStartSwitchSearch.Name = "btnStartSwitchSearch";
+            this.btnStartSwitchSearch.Size = new System.Drawing.Size(144, 23);
+            this.btnStartSwitchSearch.TabIndex = 9;
+            this.btnStartSwitchSearch.Text = "Start switch search";
+            this.btnStartSwitchSearch.UseVisualStyleBackColor = true;
+            this.btnStartSwitchSearch.Click += new System.EventHandler(this.btnStartSwitchSearch_Click);
+            // 
+            // chkPerformProbeTrade
+            // 
+            this.chkPerformProbeTrade.AutoSize = true;
+            this.chkPerformProbeTrade.Location = new System.Drawing.Point(13, 164);
+            this.chkPerformProbeTrade.Name = "chkPerformProbeTrade";
+            this.chkPerformProbeTrade.Size = new System.Drawing.Size(134, 17);
+            this.chkPerformProbeTrade.TabIndex = 8;
+            this.chkPerformProbeTrade.Text = "Perform a probe trade?";
+            this.chkPerformProbeTrade.UseVisualStyleBackColor = true;
+            // 
+            // chkPerformFlashTrade
+            // 
+            this.chkPerformFlashTrade.AutoSize = true;
+            this.chkPerformFlashTrade.Location = new System.Drawing.Point(13, 125);
+            this.chkPerformFlashTrade.Name = "chkPerformFlashTrade";
+            this.chkPerformFlashTrade.Size = new System.Drawing.Size(129, 17);
+            this.chkPerformFlashTrade.TabIndex = 7;
+            this.chkPerformFlashTrade.Text = "Perform a flash trade?";
+            this.chkPerformFlashTrade.UseVisualStyleBackColor = true;
+            // 
+            // cboSwitchCheckValidity
+            // 
+            this.cboSwitchCheckValidity.FormattingEnabled = true;
+            this.cboSwitchCheckValidity.Items.AddRange(new object[] {
+            "60",
+            "90",
+            "120"});
+            this.cboSwitchCheckValidity.Location = new System.Drawing.Point(216, 86);
+            this.cboSwitchCheckValidity.Name = "cboSwitchCheckValidity";
+            this.cboSwitchCheckValidity.Size = new System.Drawing.Size(144, 21);
+            this.cboSwitchCheckValidity.TabIndex = 6;
+            this.cboSwitchCheckValidity.Text = "60";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(10, 89);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(134, 13);
+            this.label29.TabIndex = 5;
+            this.label29.Text = "Validity of this check (mins)";
+            // 
+            // txtAmountToCheck
+            // 
+            this.txtAmountToCheck.Location = new System.Drawing.Point(216, 22);
+            this.txtAmountToCheck.Mask = "00000.0";
+            this.txtAmountToCheck.Name = "txtAmountToCheck";
+            this.txtAmountToCheck.Size = new System.Drawing.Size(144, 20);
+            this.txtAmountToCheck.TabIndex = 4;
+            this.txtAmountToCheck.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.txtAmountToCheck_MaskInputRejected);
+            this.txtAmountToCheck.TextChanged += new System.EventHandler(this.txtAmountToCheck_TextChanged);
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(10, 22);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(188, 13);
+            this.label28.TabIndex = 3;
+            this.label28.Text = "Amount to check (for setting Direction)";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(3, 49);
+            this.label12.Location = new System.Drawing.Point(10, 53);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(39, 13);
+            this.label12.Size = new System.Drawing.Size(84, 13);
             this.label12.TabIndex = 2;
-            this.label12.Text = "Switch";
+            this.label12.Text = "Switch Direction";
             // 
             // rdoSwitchDown
             // 
             this.rdoSwitchDown.AutoSize = true;
-            this.rdoSwitchDown.Location = new System.Drawing.Point(128, 49);
+            this.rdoSwitchDown.Location = new System.Drawing.Point(280, 51);
             this.rdoSwitchDown.Name = "rdoSwitchDown";
-            this.rdoSwitchDown.Size = new System.Drawing.Size(53, 17);
+            this.rdoSwitchDown.Size = new System.Drawing.Size(80, 17);
             this.rdoSwitchDown.TabIndex = 1;
-            this.rdoSwitchDown.TabStop = true;
-            this.rdoSwitchDown.Text = "Down";
+            this.rdoSwitchDown.Text = "Down (Buy)";
             this.rdoSwitchDown.UseVisualStyleBackColor = true;
             // 
             // rdoSwitchUp
             // 
             this.rdoSwitchUp.AutoSize = true;
-            this.rdoSwitchUp.Location = new System.Drawing.Point(73, 49);
+            this.rdoSwitchUp.Checked = true;
+            this.rdoSwitchUp.Location = new System.Drawing.Point(216, 51);
             this.rdoSwitchUp.Name = "rdoSwitchUp";
-            this.rdoSwitchUp.Size = new System.Drawing.Size(39, 17);
+            this.rdoSwitchUp.Size = new System.Drawing.Size(65, 17);
             this.rdoSwitchUp.TabIndex = 0;
             this.rdoSwitchUp.TabStop = true;
-            this.rdoSwitchUp.Text = "Up";
+            this.rdoSwitchUp.Text = "Up (Sell)";
             this.rdoSwitchUp.UseVisualStyleBackColor = true;
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.chkUseLiveAccount);
             this.tabPage4.Controls.Add(this.chkSAR);
             this.tabPage4.Controls.Add(this.grpSAROptions);
             this.tabPage4.Controls.Add(this.txtMaxTrades);
@@ -693,14 +767,71 @@
             this.tabPage4.Controls.Add(this.btnLoginTrade);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(762, 655);
+            this.tabPage4.Size = new System.Drawing.Size(694, 655);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Trade";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // chkUseLiveAccount
+            // 
+            this.chkUseLiveAccount.AutoSize = true;
+            this.chkUseLiveAccount.Location = new System.Drawing.Point(7, 84);
+            this.chkUseLiveAccount.Name = "chkUseLiveAccount";
+            this.chkUseLiveAccount.Size = new System.Drawing.Size(167, 17);
+            this.chkUseLiveAccount.TabIndex = 20;
+            this.chkUseLiveAccount.Text = "Use Live Account for trading?";
+            this.chkUseLiveAccount.UseVisualStyleBackColor = true;
+            this.chkUseLiveAccount.CheckedChanged += new System.EventHandler(this.chkUseLiveAccount_CheckedChanged);
+            // 
+            // chkSAR
+            // 
+            this.chkSAR.AutoSize = true;
+            this.chkSAR.Location = new System.Drawing.Point(7, 263);
+            this.chkSAR.Name = "chkSAR";
+            this.chkSAR.Size = new System.Drawing.Size(128, 17);
+            this.chkSAR.TabIndex = 19;
+            this.chkSAR.Text = "Use automatic SAR ?";
+            this.chkSAR.UseVisualStyleBackColor = true;
+            this.chkSAR.CheckedChanged += new System.EventHandler(this.chkSAR_CheckedChanged);
+            // 
+            // grpSAROptions
+            // 
+            this.grpSAROptions.Controls.Add(this.rdoSARCloseLater);
+            this.grpSAROptions.Controls.Add(this.rdoSARCloseNow);
+            this.grpSAROptions.Location = new System.Drawing.Point(7, 286);
+            this.grpSAROptions.Name = "grpSAROptions";
+            this.grpSAROptions.Size = new System.Drawing.Size(269, 100);
+            this.grpSAROptions.TabIndex = 18;
+            this.grpSAROptions.TabStop = false;
+            this.grpSAROptions.Text = "SAR Options";
+            // 
+            // rdoSARCloseLater
+            // 
+            this.rdoSARCloseLater.AutoSize = true;
+            this.rdoSARCloseLater.Location = new System.Drawing.Point(9, 60);
+            this.rdoSARCloseLater.Name = "rdoSARCloseLater";
+            this.rdoSARCloseLater.Size = new System.Drawing.Size(253, 17);
+            this.rdoSARCloseLater.TabIndex = 1;
+            this.rdoSARCloseLater.Text = "Close trades when a new Qualified probe occurs";
+            this.rdoSARCloseLater.UseVisualStyleBackColor = true;
+            this.rdoSARCloseLater.CheckedChanged += new System.EventHandler(this.rdoSARCloseLater_CheckedChanged);
+            // 
+            // rdoSARCloseNow
+            // 
+            this.rdoSARCloseNow.AutoSize = true;
+            this.rdoSARCloseNow.Checked = true;
+            this.rdoSARCloseNow.Location = new System.Drawing.Point(9, 20);
+            this.rdoSARCloseNow.Name = "rdoSARCloseNow";
+            this.rdoSARCloseNow.Size = new System.Drawing.Size(185, 17);
+            this.rdoSARCloseNow.TabIndex = 0;
+            this.rdoSARCloseNow.TabStop = true;
+            this.rdoSARCloseNow.Text = "Close trades immediately at switch";
+            this.rdoSARCloseNow.UseVisualStyleBackColor = true;
+            this.rdoSARCloseNow.CheckedChanged += new System.EventHandler(this.rdoSARCloseNow_CheckedChanged);
+            // 
             // txtMaxTrades
             // 
-            this.txtMaxTrades.Location = new System.Drawing.Point(236, 89);
+            this.txtMaxTrades.Location = new System.Drawing.Point(236, 114);
             this.txtMaxTrades.Maximum = new decimal(new int[] {
             10,
             0,
@@ -723,7 +854,7 @@
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(4, 90);
+            this.label24.Location = new System.Drawing.Point(4, 115);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(196, 13);
             this.label24.TabIndex = 4;
@@ -743,7 +874,7 @@
             // 
             // btnCloseDeal
             // 
-            this.btnCloseDeal.Location = new System.Drawing.Point(7, 444);
+            this.btnCloseDeal.Location = new System.Drawing.Point(7, 469);
             this.btnCloseDeal.Name = "btnCloseDeal";
             this.btnCloseDeal.Size = new System.Drawing.Size(217, 23);
             this.btnCloseDeal.TabIndex = 17;
@@ -753,7 +884,7 @@
             // 
             // txtDealReference
             // 
-            this.txtDealReference.Location = new System.Drawing.Point(103, 410);
+            this.txtDealReference.Location = new System.Drawing.Point(103, 435);
             this.txtDealReference.Name = "txtDealReference";
             this.txtDealReference.Size = new System.Drawing.Size(121, 20);
             this.txtDealReference.TabIndex = 16;
@@ -761,7 +892,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(13, 413);
+            this.label18.Location = new System.Drawing.Point(13, 438);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(82, 13);
             this.label18.TabIndex = 15;
@@ -769,7 +900,7 @@
             // 
             // btnPlaceTrade
             // 
-            this.btnPlaceTrade.Location = new System.Drawing.Point(7, 367);
+            this.btnPlaceTrade.Location = new System.Drawing.Point(7, 392);
             this.btnPlaceTrade.Name = "btnPlaceTrade";
             this.btnPlaceTrade.Size = new System.Drawing.Size(217, 23);
             this.btnPlaceTrade.TabIndex = 14;
@@ -779,7 +910,7 @@
             // 
             // txtSize
             // 
-            this.txtSize.Location = new System.Drawing.Point(208, 150);
+            this.txtSize.Location = new System.Drawing.Point(208, 175);
             this.txtSize.Mask = "00.0";
             this.txtSize.Name = "txtSize";
             this.txtSize.Size = new System.Drawing.Size(68, 20);
@@ -788,7 +919,7 @@
             // 
             // txtStopDistance
             // 
-            this.txtStopDistance.Location = new System.Drawing.Point(208, 182);
+            this.txtStopDistance.Location = new System.Drawing.Point(208, 207);
             this.txtStopDistance.Mask = "00";
             this.txtStopDistance.Name = "txtStopDistance";
             this.txtStopDistance.Size = new System.Drawing.Size(68, 20);
@@ -797,17 +928,17 @@
             // 
             // txtLimitDistance
             // 
-            this.txtLimitDistance.Location = new System.Drawing.Point(208, 217);
+            this.txtLimitDistance.Location = new System.Drawing.Point(208, 242);
             this.txtLimitDistance.Mask = "00";
             this.txtLimitDistance.Name = "txtLimitDistance";
             this.txtLimitDistance.Size = new System.Drawing.Size(68, 20);
             this.txtLimitDistance.TabIndex = 13;
-            this.txtLimitDistance.Text = "15";
+            this.txtLimitDistance.Text = "10";
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(4, 217);
+            this.label17.Location = new System.Drawing.Point(4, 242);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(73, 13);
             this.label17.TabIndex = 12;
@@ -816,7 +947,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(4, 182);
+            this.label16.Location = new System.Drawing.Point(4, 207);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(74, 13);
             this.label16.TabIndex = 10;
@@ -825,7 +956,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(4, 150);
+            this.label15.Location = new System.Drawing.Point(4, 175);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(27, 13);
             this.label15.TabIndex = 8;
@@ -837,7 +968,7 @@
             this.cboDirection.Items.AddRange(new object[] {
             "BUY",
             "SELL"});
-            this.cboDirection.Location = new System.Drawing.Point(208, 115);
+            this.cboDirection.Location = new System.Drawing.Point(208, 140);
             this.cboDirection.Name = "cboDirection";
             this.cboDirection.Size = new System.Drawing.Size(68, 21);
             this.cboDirection.TabIndex = 7;
@@ -845,7 +976,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(4, 115);
+            this.label14.Location = new System.Drawing.Point(4, 140);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(156, 13);
             this.label14.TabIndex = 6;
@@ -893,7 +1024,7 @@
             this.tabPage5.Controls.Add(this.cboInterval);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(762, 655);
+            this.tabPage5.Size = new System.Drawing.Size(694, 655);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Options";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -920,7 +1051,7 @@
             this.cboFilter.Size = new System.Drawing.Size(55, 20);
             this.cboFilter.TabIndex = 7;
             this.cboFilter.Value = new decimal(new int[] {
-            20,
+            25,
             0,
             0,
             0});
@@ -938,7 +1069,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(7, 100);
+            this.label23.Location = new System.Drawing.Point(4, 100);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(101, 13);
             this.label23.TabIndex = 6;
@@ -956,6 +1087,15 @@
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Relations";
+            // 
+            // label27
+            // 
+            this.label27.Location = new System.Drawing.Point(7, 89);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(226, 52);
+            this.label27.TabIndex = 3;
+            this.label27.Text = "Changing these will close trades based on SAR options if there are open trades in" +
+    " opposite direction";
             // 
             // rdoBoth
             // 
@@ -1000,6 +1140,7 @@
             "10",
             "15",
             "20",
+            "25",
             "30",
             "45",
             "60"});
@@ -1178,96 +1319,22 @@
             this.label22.TabIndex = 27;
             this.label22.Text = "Historic Start";
             // 
-            // dataGridView4
+            // btnCancelSwitchSearch
             // 
-            this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView4.Location = new System.Drawing.Point(392, 34);
-            this.dataGridView4.Name = "dataGridView4";
-            this.dataGridView4.Size = new System.Drawing.Size(363, 613);
-            this.dataGridView4.TabIndex = 1;
-            this.dataGridView4.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dataGridView4_RowPrePaint);
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label25.Location = new System.Drawing.Point(7, 7);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(111, 13);
-            this.label25.TabIndex = 2;
-            this.label25.Text = "Directional Probes";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label26.Location = new System.Drawing.Point(389, 7);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(159, 13);
-            this.label26.TabIndex = 3;
-            this.label26.Text = "Counter Directional Probes";
-            // 
-            // grpSAROptions
-            // 
-            this.grpSAROptions.Controls.Add(this.rdoSARCloseLater);
-            this.grpSAROptions.Controls.Add(this.rdoSARCloseNow);
-            this.grpSAROptions.Location = new System.Drawing.Point(7, 261);
-            this.grpSAROptions.Name = "grpSAROptions";
-            this.grpSAROptions.Size = new System.Drawing.Size(269, 100);
-            this.grpSAROptions.TabIndex = 18;
-            this.grpSAROptions.TabStop = false;
-            this.grpSAROptions.Text = "SAR Options";
-            // 
-            // chkSAR
-            // 
-            this.chkSAR.AutoSize = true;
-            this.chkSAR.Location = new System.Drawing.Point(7, 238);
-            this.chkSAR.Name = "chkSAR";
-            this.chkSAR.Size = new System.Drawing.Size(128, 17);
-            this.chkSAR.TabIndex = 19;
-            this.chkSAR.Text = "Use automatic SAR ?";
-            this.chkSAR.UseVisualStyleBackColor = true;
-            this.chkSAR.CheckedChanged += new System.EventHandler(this.chkSAR_CheckedChanged);
-            // 
-            // rdoSARCloseNow
-            // 
-            this.rdoSARCloseNow.AutoSize = true;
-            this.rdoSARCloseNow.Checked = true;
-            this.rdoSARCloseNow.Location = new System.Drawing.Point(9, 20);
-            this.rdoSARCloseNow.Name = "rdoSARCloseNow";
-            this.rdoSARCloseNow.Size = new System.Drawing.Size(185, 17);
-            this.rdoSARCloseNow.TabIndex = 0;
-            this.rdoSARCloseNow.TabStop = true;
-            this.rdoSARCloseNow.Text = "Close trades immediately at switch";
-            this.rdoSARCloseNow.UseVisualStyleBackColor = true;
-            this.rdoSARCloseNow.CheckedChanged += new System.EventHandler(this.rdoSARCloseNow_CheckedChanged);
-            // 
-            // rdoSARCloseLater
-            // 
-            this.rdoSARCloseLater.AutoSize = true;
-            this.rdoSARCloseLater.Location = new System.Drawing.Point(9, 60);
-            this.rdoSARCloseLater.Name = "rdoSARCloseLater";
-            this.rdoSARCloseLater.Size = new System.Drawing.Size(253, 17);
-            this.rdoSARCloseLater.TabIndex = 1;
-            this.rdoSARCloseLater.Text = "Close trades when a new Qualified probe occurs";
-            this.rdoSARCloseLater.UseVisualStyleBackColor = true;
-            this.rdoSARCloseLater.CheckedChanged += new System.EventHandler(this.rdoSARCloseLater_CheckedChanged);
-            // 
-            // label27
-            // 
-            this.label27.Location = new System.Drawing.Point(7, 89);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(226, 52);
-            this.label27.TabIndex = 3;
-            this.label27.Text = "Changing these will close trades based on SAR options if there are open trades in" +
-    " opposite direction";
+            this.btnCancelSwitchSearch.Location = new System.Drawing.Point(390, 206);
+            this.btnCancelSwitchSearch.Name = "btnCancelSwitchSearch";
+            this.btnCancelSwitchSearch.Size = new System.Drawing.Size(144, 23);
+            this.btnCancelSwitchSearch.TabIndex = 11;
+            this.btnCancelSwitchSearch.Text = "Cancel switch search";
+            this.btnCancelSwitchSearch.UseVisualStyleBackColor = true;
+            this.btnCancelSwitchSearch.Click += new System.EventHandler(this.btnCancelSwitchSearch_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1335, 781);
+            this.ClientSize = new System.Drawing.Size(1369, 781);
             this.Controls.Add(this.label22);
             this.Controls.Add(this.timeStart);
             this.Controls.Add(this.btnResetInterval);
@@ -1308,7 +1375,7 @@
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.btnLogin);
             this.Name = "Form1";
-            this.Text = "Api Tester";
+            this.Text = "FX API Trader";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
@@ -1317,23 +1384,22 @@
             ((System.ComponentModel.ISupportInitialize)(this.radChartView1)).EndInit();
             this.tabPage6.ResumeLayout(false);
             this.tabPage6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.radChartView2)).EndInit();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            this.grpSAROptions.ResumeLayout(false);
+            this.grpSAROptions.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtMaxTrades)).EndInit();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboFilter)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
-            this.grpSAROptions.ResumeLayout(false);
-            this.grpSAROptions.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1389,8 +1455,6 @@
         private System.Windows.Forms.RadioButton rdoSwitchDown;
         private System.Windows.Forms.RadioButton rdoSwitchUp;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Button btnSetSwitch;
-        private Telerik.WinControls.UI.RadChartView radChartView2;
         private System.Windows.Forms.DateTimePicker timeStart;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Button btnLoginTrade;
@@ -1435,6 +1499,16 @@
         private System.Windows.Forms.RadioButton rdoSARCloseLater;
         private System.Windows.Forms.RadioButton rdoSARCloseNow;
         private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.CheckBox chkUseLiveAccount;
+        private System.Windows.Forms.CheckBox chkPerformProbeTrade;
+        private System.Windows.Forms.CheckBox chkPerformFlashTrade;
+        private System.Windows.Forms.ComboBox cboSwitchCheckValidity;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.MaskedTextBox txtAmountToCheck;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Button btnStartSwitchSearch;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Button btnCancelSwitchSearch;
     }
 }
 

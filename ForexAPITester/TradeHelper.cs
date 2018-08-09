@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace ForexAPITester
         private static double size;
         private static string tradeUrl;
         private static APICredentials apiCredentials = new APICredentials();
+        private static APICredentials dataCredentials = new APICredentials();
         private static string tradeXToken;
         private static string tradeCstToken;
         private static AccountMain acctTrade;
@@ -22,6 +24,21 @@ namespace ForexAPITester
         private static bool closeExistingTrades = false;
 
         public static SARCloseOptions CloseOptions { get; set; } = SARCloseOptions.CloseNow;
+        public static string TradeUrl
+        {
+            get
+            {
+                return tradeUrl;
+            }
+            set
+            {
+                if (tradeUrl != value)
+                {
+                    tradeUrl = value;
+                    LoginToTradingAccount();
+                }
+            }
+        }
         public static bool CloseExistingTrades
         {
             get
@@ -39,17 +56,31 @@ namespace ForexAPITester
         }
         static TradeHelper()
         {
-            string loginMessage = string.Empty;
+
             tradeUrl = "https://demo-api.ig.com/gateway";
-            APICredentials dataCredentials = new APICredentials();
-            Library.ReadCredentials(ref dataCredentials, ref apiCredentials);
             currentTrades = 0;
-            if (APIHelper.LoginToAccount($"{tradeUrl}/deal/session", apiCredentials.APIKey, new Login()
+            LoginToTradingAccount();
+        }
+
+        public static void LoginToTradingAccount()
+        {
+            string loginMessage = string.Empty;
+            Library.ReadCredentials(ref dataCredentials, ref apiCredentials);
+            Login tradeLogin = new Login() { encryptedPassword = null };
+            string apiKey;
+            if (tradeUrl == Library.DemoTradingUrl)
             {
-                identifier = apiCredentials.UserName,
-                password = apiCredentials.Password,
-                encryptedPassword = null
-            }, out tradeXToken, out tradeCstToken, out acctTrade, out loginMessage))
+                tradeLogin.identifier = apiCredentials.UserName;
+                tradeLogin.password = apiCredentials.Password;
+                apiKey = apiCredentials.APIKey;
+            }
+            else
+            {
+                tradeLogin.identifier = dataCredentials.UserName;
+                tradeLogin.password = dataCredentials.Password;
+                apiKey = dataCredentials.APIKey;
+            }
+            if (APIHelper.LoginToAccount($"{tradeUrl}/deal/session", apiKey, tradeLogin, out tradeXToken, out tradeCstToken, out acctTrade, out loginMessage))
             {
 
             }
@@ -57,12 +88,13 @@ namespace ForexAPITester
             {
                 throw new Exception($"Trade account login failed:{loginMessage}");
             }
+
         }
         public static string PlaceTrade(string Epic, Library.TradeDirection Direction, double Size, int StopDistance, int LimitDistance, bool IsSingleDirectional, int MaxNumberOfTrades)
         {
             bool place = false;
             TradeDirection currentDirection;
-            if (closeExistingTrades && CloseOptions == SARCloseOptions.CloseLater)
+            if (closeExistingTrades && CloseOptions == SARCloseOptions.CloseLater && lastTradeDirection != Direction)
             {
                 closeExistingTrades = false;
                 CloseAllTrades();
@@ -102,7 +134,7 @@ namespace ForexAPITester
                     stopDistance = StopDistance,
                     limitDistance = LimitDistance
                 };
-                var tradeResponse = APIHelper.MakeTradeRequest($"{tradeUrl}/deal/positions/otc", apiCredentials.APIKey, tradeXToken, tradeCstToken, tradeReq);
+                var tradeResponse = APIHelper.MakeTradeRequest($"{tradeUrl}/deal/positions/otc", (tradeUrl == Library.DemoTradingUrl ? apiCredentials.APIKey : dataCredentials.APIKey), tradeXToken, tradeCstToken, tradeReq);
                 if (tradeResponse.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var dealRef = JsonConvert.DeserializeObject<TradeResponse>(tradeResponse.Content);
@@ -161,13 +193,13 @@ namespace ForexAPITester
         {
             try
             {
-                var positionsResponse = APIHelper.Positions($"{tradeUrl}/deal/positions", apiCredentials.APIKey, tradeXToken, tradeCstToken);
+                var positionsResponse = APIHelper.Positions($"{tradeUrl}/deal/positions", (tradeUrl == Library.DemoTradingUrl ? apiCredentials.APIKey : dataCredentials.APIKey), tradeXToken, tradeCstToken);
                 if (positionsResponse.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var position = JsonConvert.DeserializeObject<TradePosition>(positionsResponse.Content);
                     var positionToCloseDeal = position.positions.Where(p => p.position.dealReference == tradeRefToClose).FirstOrDefault();
                     var dealIdToClose = positionToCloseDeal.position.dealId;
-                    var responseClose = APIHelper.CloseTradeRequest($"{tradeUrl}/deal/positions/otc", apiCredentials.APIKey, tradeXToken, tradeCstToken, new CloseTradeRequest()
+                    var responseClose = APIHelper.CloseTradeRequest($"{tradeUrl}/deal/positions/otc", (tradeUrl == Library.DemoTradingUrl ? apiCredentials.APIKey : dataCredentials.APIKey), tradeXToken, tradeCstToken, new CloseTradeRequest()
                     {
                         dealId = dealIdToClose,
                         direction = lastTradeDirection == TradeDirection.Buy ? "SELL" : "BUY",
@@ -189,7 +221,7 @@ namespace ForexAPITester
                 var position = JsonConvert.DeserializeObject<TradePosition>(positionsResponse.Content);
                 foreach (var positionToCloseDeal in position.positions)
                 {
-                    var responseClose = APIHelper.CloseTradeRequest($"{tradeUrl}/deal/positions/otc", apiCredentials.APIKey, tradeXToken, tradeCstToken, new CloseTradeRequest()
+                    var responseClose = APIHelper.CloseTradeRequest($"{tradeUrl}/deal/positions/otc", (tradeUrl == Library.DemoTradingUrl ? apiCredentials.APIKey : dataCredentials.APIKey), tradeXToken, tradeCstToken, new CloseTradeRequest()
                     {
                         dealId = positionToCloseDeal.position.dealId,
                         direction = positionToCloseDeal.position.direction == "BUY" ? "SELL" : "BUY",
@@ -198,6 +230,15 @@ namespace ForexAPITester
                 }
             }
 
+        }
+
+        public static TradingAccounts GetTradingAccount()
+        {
+            Library.ReadCredentials(ref dataCredentials, ref apiCredentials);
+
+            var accountDetails = APIHelper.makeRequest($"{tradeUrl}/deal/accounts", (tradeUrl == Library.DemoTradingUrl ? apiCredentials.APIKey : dataCredentials.APIKey), tradeXToken, tradeCstToken, Method.GET, "1");
+            var tradeAccountInfo = JsonConvert.DeserializeObject<TradingAccounts>(accountDetails.Content);
+            return tradeAccountInfo;
         }
     }
 }
