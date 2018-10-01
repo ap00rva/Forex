@@ -129,7 +129,7 @@ namespace ForexAPITester
         public object binaryOdds { get; set; }
         public int decimalPlacesFactor { get; set; }
         public int scalingFactor { get; set; }
-        public int controlledRiskExtraSpread { get; set; }
+        public decimal controlledRiskExtraSpread { get; set; }
     }
 
     public class MarketInfo

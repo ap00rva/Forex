@@ -15,6 +15,7 @@ using Telerik.WinControls.UI;
 using Telerik.Charting;
 using System.Threading;
 using static ForexAPITester.Library;
+using AutoUpdaterDotNET;
 
 namespace ForexAPITester
 {
@@ -23,9 +24,6 @@ namespace ForexAPITester
         private string cstToken;
         private string xToken;
 
-        private string tradeCstToken;
-        private string tradeXToken;
-        private AccountMain acctTrade;
         FileStream userData;
         List<PriceView> priceViews = new List<PriceView>();
         List<PriceView> allProbes = new List<PriceView>();
@@ -49,6 +47,7 @@ namespace ForexAPITester
         TradeDirection probeTradeDirection = TradeDirection.Buy;
         decimal probeAmount = 0;
         bool switchHasBeenReset = false;
+        List<SwitchData> switches = new List<SwitchData>();
         public Form1()
         {
             InitializeComponent();
@@ -240,8 +239,13 @@ namespace ForexAPITester
                 rdoUp.Visible = false;
                 rdoDown.Visible = false;
                 //tabControl1.TabPages.RemoveAt(3);
+                btnCheckOpenTrades.Visible = false;
 
 #endif
+
+                this.Text = this.Text + $" (v:{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version})";
+                LoadSettings();
+                AutoUpdater.Mandatory = true;
                 //timeStart.MinDate = DateTime.UtcNow.AddHours(-8);
                 cboFilter.Value = 25;
                 logFile = $"log{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}{DateTime.Now.Hour}{DateTime.Now.Minute}.txt";
@@ -254,9 +258,10 @@ namespace ForexAPITester
                 {
                     txtLog.Text = "Tokens found";
                 }
-                timeStart1.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 6, 0, 0);
-                timeStart.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 6, 0, 0);
+                timeStart1.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 4, 0, 0);
+                timeStart.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 4, 0, 0);
                 timeEnd.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 19, 0, 0);
+                timer2.Start();
             }
             catch (IOException ex)
             {
@@ -530,6 +535,8 @@ namespace ForexAPITester
         private void timer1_Tick(object sender, EventArgs e)
         {
             DateTime current = timeStart.Value;
+            string tradeMessage = string.Empty;
+
             if (current.Minute == 0 || current.Minute % minutesToCheck == 0)
             {
                 //then we can request data for current
@@ -548,6 +555,7 @@ namespace ForexAPITester
                 loadData(current.AddMinutes(minutesToCheck * (-1)), current, true);
                 //List<PriceView> pViews = new List<PriceView>();
                 DateTime start1;
+
                 if (priceViews.Any())
                 {
 
@@ -572,9 +580,13 @@ namespace ForexAPITester
                         //future place trade has been set
                         if (IsTimeForProbeTrade(last))
                         {
-                            if (IsConditionMetForProbeTrade(last))
+                            if (SwitchHelper.IsConditionMetForProbeTrade(last))
                             {
-                                TradeHelper.PlaceTrade(txtEpic.Text, probeTradeDirection, double.Parse(txtSize.Text), int.Parse(txtStopDistance.Text), int.Parse(txtLimitDistance.Text), !rdoBoth.Checked, (int)txtMaxTrades.Value);
+                                TradeHelper.PlaceTrade(txtEpic.Text, probeTradeDirection, double.Parse(txtSize.Text), int.Parse(txtStopDistance.Text), int.Parse(txtLimitDistance.Text), !rdoBoth.Checked, (int)txtMaxTrades.Value, out tradeMessage);
+                                if (!string.IsNullOrWhiteSpace(tradeMessage))
+                                {
+                                    txtLog.Text = tradeMessage;
+                                }
                             }
                             probeTradeTime = null;
                         }
@@ -622,7 +634,12 @@ namespace ForexAPITester
                     }
                     if (probe.ProbeQualified && chkTrade.Checked)
                     {
-                        TradeHelper.PlaceTrade(txtEpic.Text, probe.AskUpDown == Library.UpBar ? Library.TradeDirection.Sell : Library.TradeDirection.Buy, double.Parse(txtSize.Text), int.Parse(txtStopDistance.Text), int.Parse(txtLimitDistance.Text), !rdoBoth.Checked, (int)txtMaxTrades.Value);
+                        TradeHelper.PlaceTrade(txtEpic.Text, probe.AskUpDown == Library.UpBar ? Library.TradeDirection.Sell : Library.TradeDirection.Buy, double.Parse(txtSize.Text), int.Parse(txtStopDistance.Text), int.Parse(txtLimitDistance.Text), !rdoBoth.Checked, (int)txtMaxTrades.Value, out tradeMessage);
+                        if (!string.IsNullOrWhiteSpace(tradeMessage))
+                        {
+                            txtLog.Text = tradeMessage;
+                        }
+
                     }
                     //allProbes.AddRange(pViews.Where(p => p.IsDownProbe || p.IsUpProbe));
                     pViews.Clear();
@@ -1009,8 +1026,11 @@ namespace ForexAPITester
 
         private void cboInterval_SelectedIndexChanged(object sender, EventArgs e)
         {
-            btnResetInterval_Click(cboInterval, new EventArgs());
-            sendStatus();
+            if (cboInterval.SelectedIndex != -1)
+            {
+                btnResetInterval_Click(cboInterval, new EventArgs());
+                sendStatus();
+            }
         }
 
         private void btnSetSwitch_Click(object sender, EventArgs e)
@@ -1161,7 +1181,13 @@ namespace ForexAPITester
 
         private void btnPlaceTrade_Click(object sender, EventArgs e)
         {
-            txtDealReference.Text = TradeHelper.PlaceTrade(txtEpic.Text, cboDirection.SelectedItem.ToString() == "BUY" ? TradeDirection.Buy : TradeDirection.Sell, float.Parse(txtSize.Text), int.Parse(txtStopDistance.Text), int.Parse(txtLimitDistance.Text), true, 1);
+            string tradeMessage = string.Empty;
+            txtDealReference.Text = TradeHelper.PlaceTrade(txtEpic.Text, cboDirection.SelectedItem.ToString() == "BUY" ? TradeDirection.Buy : TradeDirection.Sell, float.Parse(txtSize.Text), int.Parse(txtStopDistance.Text), int.Parse(txtLimitDistance.Text), true, (int)txtMaxTrades.Value, out tradeMessage);
+            if (!string.IsNullOrWhiteSpace(tradeMessage))
+            {
+                txtLog.Text = tradeMessage;
+            }
+
             //var tradePositionUrl = "https://demo-api.ig.com/gateway/deal/positions/otc";
             //TradeRequest tradeReq = new TradeRequest()
             //{
@@ -1181,6 +1207,7 @@ namespace ForexAPITester
             //{
             //    txtLog.Text = tradeResponse.Content;
             //}
+
 
         }
 
@@ -1252,8 +1279,11 @@ namespace ForexAPITester
 
         private void cboSignallingMinutes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            signallingWindowMinutes = int.Parse(cboSignallingMinutes.SelectedItem.ToString()) * (-1);
-            sendStatus();
+            if (cboSignallingMinutes.SelectedIndex != -1)
+            {
+                signallingWindowMinutes = int.Parse(cboSignallingMinutes.SelectedItem.ToString()) * (-1);
+                sendStatus();
+            }
         }
 
         private void cboProbeWindowMinutes_SelectedIndexChanged(object sender, EventArgs e)
@@ -1446,10 +1476,10 @@ namespace ForexAPITester
             }
         }
 
-        private void sendStatus()
+        private void sendStatus(bool ForceSend = false)
         {
 #if !DEBUG
-            if (chkTrade.Checked)
+            if (chkTrade.Checked || ForceSend)
             {
                 TradeState state = new TradeState()
                 {
@@ -1524,6 +1554,7 @@ namespace ForexAPITester
             {
                 label30.Text = "Switch search is in progress...";
                 SwitchHelper.PriceToCheck = amountToCheck;
+                SwitchHelper.FlexibleRange = txtFlexibleRange.Value;
                 SwitchHelper.SwitchSearchStartTime = DateTime.Now;
                 SwitchHelper.SwitchSearchEndTime = SwitchHelper.SwitchSearchStartTime.AddMinutes(double.Parse(cboSwitchCheckValidity.Text));
                 SwitchHelper.SwitchDirection = (rdoSwitchUp.Checked ? TradeDirection.Sell : TradeDirection.Buy);
@@ -1534,6 +1565,8 @@ namespace ForexAPITester
                 chkPerformFlashTrade.Enabled = false;
                 chkPerformProbeTrade.Enabled = false;
                 cboSwitchCheckValidity.Enabled = false;
+                chkTrade.Checked = false;
+                sendStatus(true);
             }
         }
         private void ResetSwitch()
@@ -1544,9 +1577,7 @@ namespace ForexAPITester
             chkPerformFlashTrade.Checked = false;
             chkPerformProbeTrade.Checked = false;
             label30.Text = string.Empty;
-            SwitchHelper.PriceToCheck = 0;
-            SwitchHelper.SwitchSearchStartTime = DateTime.Today.AddDays(100);
-            SwitchHelper.SwitchSearchEndTime = DateTime.Today.AddDays(100);
+            SwitchHelper.Reset();
             switchHasBeenReset = true;
             txtAmountToCheck.Enabled = true;
             rdoSwitchUp.Enabled = true;
@@ -1557,6 +1588,7 @@ namespace ForexAPITester
         }
         private void SetSwitch()
         {
+            string tradeMessage = string.Empty;
             chkTrade.Checked = true;
             if (SwitchHelper.SwitchDirection == TradeDirection.Sell)
             {
@@ -1570,7 +1602,12 @@ namespace ForexAPITester
             }
             if (chkPerformFlashTrade.Checked)
             {
-                TradeHelper.PlaceTrade(txtEpic.Text, SwitchHelper.SwitchDirection, double.Parse(txtSize.Text), int.Parse(txtStopDistance.Text), int.Parse(txtLimitDistance.Text), !rdoBoth.Checked, (int)txtMaxTrades.Value);
+                TradeHelper.PlaceTrade(txtEpic.Text, SwitchHelper.SwitchDirection, double.Parse(txtSize.Text), int.Parse(txtStopDistance.Text), int.Parse(txtLimitDistance.Text), !rdoBoth.Checked, (int)txtMaxTrades.Value, out tradeMessage);
+                if (!string.IsNullOrWhiteSpace(tradeMessage))
+                {
+                    txtLog.Text = tradeMessage;
+                }
+
             }
             if (chkPerformProbeTrade.Checked)
             {
@@ -1579,6 +1616,17 @@ namespace ForexAPITester
                 probeTradeDirection = SwitchHelper.SwitchDirection;
                 probeAmount = SwitchHelper.PriceToCheck;
             }
+            switches.Add(new SwitchData()
+            {
+                Market = txtEpic.Text,
+                FlashTrade = chkPerformFlashTrade.Checked,
+                ProbeTrade = chkPerformProbeTrade.Checked,
+                ProbeTradeDate = probeTradeTime,
+                SwitchAmount = SwitchHelper.PriceToCheck,
+                SwitchDate = DateTime.Now,
+                SwitchDirection = SwitchHelper.SwitchDirection == TradeDirection.Buy ? "Buy" : "Sell"
+            });
+            rebindSwitches();
             switchHasBeenReset = true;
             ResetSwitch();
         }
@@ -1592,21 +1640,106 @@ namespace ForexAPITester
             return probeTrade.Year == DateTime.Now.Year && probeTrade.Month == DateTime.Now.Month && probeTrade.Day == DateTime.Now.Day && probeTrade.Hour == DateTime.Now.Hour && CurrentPriceData.SnapshotDateTime.Minute == 0;
         }
 
-        private bool IsConditionMetForProbeTrade(PriceView CurrentPriceData)
-        {
-            if (probeTradeDirection == TradeDirection.Buy)
-            {
-                return CurrentPriceData.AskClose >= probeAmount;
-            }
-            else if (probeTradeDirection == TradeDirection.Sell)
-            {
-                return CurrentPriceData.AskClose <= probeAmount;
-            }
-            return false;
-        }
         private void btnCancelSwitchSearch_Click(object sender, EventArgs e)
         {
             ResetSwitch();
+        }
+        private void rebindSwitches()
+        {
+            BindingSource source = new BindingSource();
+            source.DataSource = switches;
+            dataGridView5.Refresh();
+            dataGridView5.DataSource = source;
+
+        }
+
+        private void btnCheckForUpdates_Click(object sender, EventArgs e)
+        {
+            AutoUpdater.Start("http://dixit.myds.me:8282/~Apoorva%20Dixit/FXAPITrader.xml");
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveSettings();
+        }
+
+        private void LoadSettings()
+        {
+            if (Properties.Settings.Default.UpdateSettings)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.UpdateSettings = false;
+                Properties.Settings.Default.Save();
+            }
+            txtEpic.Text = Properties.Settings.Default.Epic;
+            //this.Size = Properties.Settings.Default.FormSize;
+            cboSwitchCheckValidity.Text = Properties.Settings.Default.SwitchValidity;
+            chkTrade.Checked = Properties.Settings.Default.AutomaticTrade;
+            txtMaxTrades.Value = Properties.Settings.Default.MaxTrades;
+            txtSize.Text = Properties.Settings.Default.TradeSize;
+            txtStopDistance.Text = Properties.Settings.Default.StopDistance;
+            txtLimitDistance.Text = Properties.Settings.Default.LimitDistance;
+            //rdoSARCloseNow.Checked = Properties.Settings.Default.SARCloseNow;
+            //rdoSARCloseLater.Checked = Properties.Settings.Default.SARCloseLater;
+            cboInterval.Text = Properties.Settings.Default.Interval;
+            cboSignallingMinutes.Text = Properties.Settings.Default.SignallingMinutes;
+            cboProbeWindowMinutes.Text = Properties.Settings.Default.ProbeWindowMinutes;
+            cboFilter.Value = Properties.Settings.Default.FilterWindowMinutes;
+            //rdoUpOnly.Checked = Properties.Settings.Default.RelationUp;
+            //rdoDownOnly.Checked = Properties.Settings.Default.RelationDown;
+            //rdoBoth.Checked = Properties.Settings.Default.RelationBoth;
+        }
+
+        private void SaveSettings()
+        {
+
+            Properties.Settings.Default.Epic = txtEpic.Text;
+            //Properties.Settings.Default.FormSize = this.Size;
+            Properties.Settings.Default.SwitchValidity = cboSwitchCheckValidity.Text;
+            Properties.Settings.Default.AutomaticTrade = chkTrade.Checked;
+            Properties.Settings.Default.MaxTrades = txtMaxTrades.Value;
+            Properties.Settings.Default.TradeSize = txtSize.Text;
+            Properties.Settings.Default.StopDistance = txtStopDistance.Text;
+            Properties.Settings.Default.LimitDistance = txtLimitDistance.Text;
+            //Properties.Settings.Default.SARCloseNow = rdoSARCloseNow.Checked;
+            //Properties.Settings.Default.SARCloseLater = rdoSARCloseLater.Checked;
+            Properties.Settings.Default.Interval = cboInterval.Text;
+            Properties.Settings.Default.SignallingMinutes = cboSignallingMinutes.Text;
+            Properties.Settings.Default.ProbeWindowMinutes = cboProbeWindowMinutes.Text;
+            //Properties.Settings.Default.RelationUp = rdoUpOnly.Checked;
+            //Properties.Settings.Default.RelationDown = rdoDownOnly.Checked;
+            //Properties.Settings.Default.RelationBoth = rdoBoth.Checked;
+            Properties.Settings.Default.Save();
+
+        }
+
+        private void chkPerformProbeTrade_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkPerformProbeTrade.Checked)
+            {
+                txtFlexibleRange.Enabled = true;
+                txtFlexibleRange.Value = 10;
+            }
+            else
+            {
+                txtFlexibleRange.Enabled = false;
+                txtFlexibleRange.Value = 0;
+            }
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+#if DEBUG
+            if (chkTrade.Checked)
+            {
+                TradeHelper.CheckOldPositionsAndClose();
+            }
+#endif
+        }
+
+        private void btnCheckOpenTrades_Click(object sender, EventArgs e)
+        {
+            TradeHelper.CheckOldPositionsAndClose();
         }
     }
 }

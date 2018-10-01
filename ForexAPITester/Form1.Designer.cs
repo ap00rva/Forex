@@ -29,20 +29,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             Telerik.WinControls.UI.CartesianArea cartesianArea1 = new Telerik.WinControls.UI.CartesianArea();
             Telerik.WinControls.UI.CategoricalAxis categoricalAxis1 = new Telerik.WinControls.UI.CategoricalAxis();
             Telerik.WinControls.UI.LinearAxis linearAxis1 = new Telerik.WinControls.UI.LinearAxis();
             Telerik.WinControls.UI.OhlcSeries ohlcSeries1 = new Telerik.WinControls.UI.OhlcSeries();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnLogin = new System.Windows.Forms.Button();
-            this.txtLog = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtEpic = new System.Windows.Forms.TextBox();
             this.btnMarketData = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
@@ -79,6 +77,10 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.txtFlexibleRange = new System.Windows.Forms.NumericUpDown();
+            this.label31 = new System.Windows.Forms.Label();
+            this.dataGridView5 = new System.Windows.Forms.DataGridView();
+            this.btnCancelSwitchSearch = new System.Windows.Forms.Button();
             this.label30 = new System.Windows.Forms.Label();
             this.btnStartSwitchSearch = new System.Windows.Forms.Button();
             this.chkPerformProbeTrade = new System.Windows.Forms.CheckBox();
@@ -96,16 +98,11 @@
             this.grpSAROptions = new System.Windows.Forms.GroupBox();
             this.rdoSARCloseLater = new System.Windows.Forms.RadioButton();
             this.rdoSARCloseNow = new System.Windows.Forms.RadioButton();
-            this.txtMaxTrades = new System.Windows.Forms.NumericUpDown();
             this.label24 = new System.Windows.Forms.Label();
-            this.chkTrade = new System.Windows.Forms.CheckBox();
             this.btnCloseDeal = new System.Windows.Forms.Button();
             this.txtDealReference = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
             this.btnPlaceTrade = new System.Windows.Forms.Button();
-            this.txtSize = new System.Windows.Forms.MaskedTextBox();
-            this.txtStopDistance = new System.Windows.Forms.MaskedTextBox();
-            this.txtLimitDistance = new System.Windows.Forms.MaskedTextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -114,6 +111,11 @@
             this.lblBalance = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.btnLoginTrade = new System.Windows.Forms.Button();
+            this.txtMaxTrades = new System.Windows.Forms.NumericUpDown();
+            this.chkTrade = new System.Windows.Forms.CheckBox();
+            this.txtSize = new System.Windows.Forms.MaskedTextBox();
+            this.txtStopDistance = new System.Windows.Forms.MaskedTextBox();
+            this.txtLimitDistance = new System.Windows.Forms.MaskedTextBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.cboFilter = new System.Windows.Forms.NumericUpDown();
             this.btnLoginCreds = new System.Windows.Forms.Button();
@@ -125,10 +127,12 @@
             this.rdoUpOnly = new System.Windows.Forms.RadioButton();
             this.cboProbeWindowMinutes = new System.Windows.Forms.ComboBox();
             this.label21 = new System.Windows.Forms.Label();
-            this.cboSignallingMinutes = new System.Windows.Forms.ComboBox();
             this.label20 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
+            this.cboSignallingMinutes = new System.Windows.Forms.ComboBox();
             this.cboInterval = new System.Windows.Forms.ComboBox();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.txtLog = new System.Windows.Forms.TextBox();
             this.btnStartAuto = new System.Windows.Forms.Button();
             this.btnFillIntervals = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
@@ -140,7 +144,10 @@
             this.btnResetInterval = new System.Windows.Forms.Button();
             this.timeStart = new System.Windows.Forms.DateTimePicker();
             this.label22 = new System.Windows.Forms.Label();
-            this.btnCancelSwitchSearch = new System.Windows.Forms.Button();
+            this.btnCheckForUpdates = new System.Windows.Forms.Button();
+            this.txtEpic = new System.Windows.Forms.TextBox();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.btnCheckOpenTrades = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
@@ -151,12 +158,15 @@
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtFlexibleRange)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).BeginInit();
             this.tabPage4.SuspendLayout();
             this.grpSAROptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtMaxTrades)).BeginInit();
             this.tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboFilter)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.tabPage7.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnLogin
@@ -169,15 +179,6 @@
             this.btnLogin.UseVisualStyleBackColor = true;
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
-            // txtLog
-            // 
-            this.txtLog.Location = new System.Drawing.Point(777, 12);
-            this.txtLog.Multiline = true;
-            this.txtLog.Name = "txtLog";
-            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtLog.Size = new System.Drawing.Size(240, 116);
-            this.txtLog.TabIndex = 38;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -187,17 +188,9 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Market Code";
             // 
-            // txtEpic
-            // 
-            this.txtEpic.Location = new System.Drawing.Point(87, 41);
-            this.txtEpic.Name = "txtEpic";
-            this.txtEpic.Size = new System.Drawing.Size(175, 20);
-            this.txtEpic.TabIndex = 4;
-            this.txtEpic.Text = "CS.D.GBPUSD.TODAY.IP";
-            // 
             // btnMarketData
             // 
-            this.btnMarketData.Location = new System.Drawing.Point(645, 44);
+            this.btnMarketData.Location = new System.Drawing.Point(519, 75);
             this.btnMarketData.Name = "btnMarketData";
             this.btnMarketData.Size = new System.Drawing.Size(126, 23);
             this.btnMarketData.TabIndex = 5;
@@ -335,7 +328,7 @@
             // 
             this.btnHistoricData.Location = new System.Drawing.Point(519, 175);
             this.btnHistoricData.Name = "btnHistoricData";
-            this.btnHistoricData.Size = new System.Drawing.Size(106, 23);
+            this.btnHistoricData.Size = new System.Drawing.Size(126, 23);
             this.btnHistoricData.TabIndex = 31;
             this.btnHistoricData.Text = "Get Historic Data";
             this.btnHistoricData.UseVisualStyleBackColor = true;
@@ -401,7 +394,7 @@
             // 
             // btnFindRelated
             // 
-            this.btnFindRelated.Location = new System.Drawing.Point(643, 176);
+            this.btnFindRelated.Location = new System.Drawing.Point(651, 176);
             this.btnFindRelated.Name = "btnFindRelated";
             this.btnFindRelated.Size = new System.Drawing.Size(128, 23);
             this.btnFindRelated.TabIndex = 32;
@@ -424,10 +417,11 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage5);
+            this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Location = new System.Drawing.Point(12, 230);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(685, 681);
+            this.tabControl1.Size = new System.Drawing.Size(549, 681);
             this.tabControl1.TabIndex = 2;
             // 
             // tabPage1
@@ -437,7 +431,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(677, 655);
+            this.tabPage1.Size = new System.Drawing.Size(541, 655);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Chart";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -445,33 +439,33 @@
             // dataGridView2
             // 
             this.dataGridView2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView2.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridView2.Location = new System.Drawing.Point(441, 20);
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView2.DefaultCellStyle = dataGridViewCellStyle14;
+            this.dataGridView2.Location = new System.Drawing.Point(322, 20);
             this.dataGridView2.Name = "dataGridView2";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView2.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView2.RowHeadersDefaultCellStyle = dataGridViewCellStyle15;
             this.dataGridView2.RowHeadersVisible = false;
             this.dataGridView2.Size = new System.Drawing.Size(219, 535);
             this.dataGridView2.TabIndex = 1;
@@ -510,7 +504,7 @@
             this.radChartView1.ShowPanZoom = true;
             this.radChartView1.ShowToolTip = true;
             this.radChartView1.ShowTrackBall = true;
-            this.radChartView1.Size = new System.Drawing.Size(413, 578);
+            this.radChartView1.Size = new System.Drawing.Size(294, 578);
             this.radChartView1.TabIndex = 0;
             // 
             // tabPage6
@@ -522,7 +516,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(694, 655);
+            this.tabPage6.Size = new System.Drawing.Size(541, 655);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Qualified Probes";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -571,7 +565,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(694, 655);
+            this.tabPage2.Size = new System.Drawing.Size(541, 655);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Data";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -580,38 +574,41 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle17;
             this.dataGridView1.Location = new System.Drawing.Point(6, 3);
             this.dataGridView1.Name = "dataGridView1";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle18;
             this.dataGridView1.Size = new System.Drawing.Size(742, 599);
             this.dataGridView1.TabIndex = 20;
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.txtFlexibleRange);
+            this.tabPage3.Controls.Add(this.label31);
+            this.tabPage3.Controls.Add(this.dataGridView5);
             this.tabPage3.Controls.Add(this.btnCancelSwitchSearch);
             this.tabPage3.Controls.Add(this.label30);
             this.tabPage3.Controls.Add(this.btnStartSwitchSearch);
@@ -626,23 +623,66 @@
             this.tabPage3.Controls.Add(this.rdoSwitchUp);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(677, 655);
+            this.tabPage3.Size = new System.Drawing.Size(541, 655);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Switch";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // txtFlexibleRange
+            // 
+            this.txtFlexibleRange.Enabled = false;
+            this.txtFlexibleRange.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.txtFlexibleRange.Location = new System.Drawing.Point(216, 204);
+            this.txtFlexibleRange.Name = "txtFlexibleRange";
+            this.txtFlexibleRange.Size = new System.Drawing.Size(144, 20);
+            this.txtFlexibleRange.TabIndex = 14;
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(13, 204);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(172, 13);
+            this.label31.TabIndex = 13;
+            this.label31.Text = "Flexible Range for probe trade (+/-)";
+            // 
+            // dataGridView5
+            // 
+            this.dataGridView5.AllowUserToAddRows = false;
+            this.dataGridView5.AllowUserToDeleteRows = false;
+            this.dataGridView5.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView5.Location = new System.Drawing.Point(13, 285);
+            this.dataGridView5.Name = "dataGridView5";
+            this.dataGridView5.ReadOnly = true;
+            this.dataGridView5.Size = new System.Drawing.Size(652, 216);
+            this.dataGridView5.TabIndex = 12;
+            // 
+            // btnCancelSwitchSearch
+            // 
+            this.btnCancelSwitchSearch.Location = new System.Drawing.Point(390, 247);
+            this.btnCancelSwitchSearch.Name = "btnCancelSwitchSearch";
+            this.btnCancelSwitchSearch.Size = new System.Drawing.Size(144, 23);
+            this.btnCancelSwitchSearch.TabIndex = 11;
+            this.btnCancelSwitchSearch.Text = "Cancel switch search";
+            this.btnCancelSwitchSearch.UseVisualStyleBackColor = true;
+            this.btnCancelSwitchSearch.Click += new System.EventHandler(this.btnCancelSwitchSearch_Click);
             // 
             // label30
             // 
             this.label30.AutoSize = true;
             this.label30.Location = new System.Drawing.Point(387, 22);
             this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(41, 13);
+            this.label30.Size = new System.Drawing.Size(74, 13);
             this.label30.TabIndex = 10;
-            this.label30.Text = "label30";
+            this.label30.Text = "Switch search";
             // 
             // btnStartSwitchSearch
             // 
-            this.btnStartSwitchSearch.Location = new System.Drawing.Point(216, 206);
+            this.btnStartSwitchSearch.Location = new System.Drawing.Point(216, 247);
             this.btnStartSwitchSearch.Name = "btnStartSwitchSearch";
             this.btnStartSwitchSearch.Size = new System.Drawing.Size(144, 23);
             this.btnStartSwitchSearch.TabIndex = 9;
@@ -659,6 +699,7 @@
             this.chkPerformProbeTrade.TabIndex = 8;
             this.chkPerformProbeTrade.Text = "Perform a probe trade?";
             this.chkPerformProbeTrade.UseVisualStyleBackColor = true;
+            this.chkPerformProbeTrade.CheckedChanged += new System.EventHandler(this.chkPerformProbeTrade_CheckedChanged);
             // 
             // chkPerformFlashTrade
             // 
@@ -747,16 +788,11 @@
             this.tabPage4.Controls.Add(this.chkUseLiveAccount);
             this.tabPage4.Controls.Add(this.chkSAR);
             this.tabPage4.Controls.Add(this.grpSAROptions);
-            this.tabPage4.Controls.Add(this.txtMaxTrades);
             this.tabPage4.Controls.Add(this.label24);
-            this.tabPage4.Controls.Add(this.chkTrade);
             this.tabPage4.Controls.Add(this.btnCloseDeal);
             this.tabPage4.Controls.Add(this.txtDealReference);
             this.tabPage4.Controls.Add(this.label18);
             this.tabPage4.Controls.Add(this.btnPlaceTrade);
-            this.tabPage4.Controls.Add(this.txtSize);
-            this.tabPage4.Controls.Add(this.txtStopDistance);
-            this.tabPage4.Controls.Add(this.txtLimitDistance);
             this.tabPage4.Controls.Add(this.label17);
             this.tabPage4.Controls.Add(this.label16);
             this.tabPage4.Controls.Add(this.label15);
@@ -765,9 +801,14 @@
             this.tabPage4.Controls.Add(this.lblBalance);
             this.tabPage4.Controls.Add(this.label13);
             this.tabPage4.Controls.Add(this.btnLoginTrade);
+            this.tabPage4.Controls.Add(this.txtMaxTrades);
+            this.tabPage4.Controls.Add(this.chkTrade);
+            this.tabPage4.Controls.Add(this.txtSize);
+            this.tabPage4.Controls.Add(this.txtStopDistance);
+            this.tabPage4.Controls.Add(this.txtLimitDistance);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(694, 655);
+            this.tabPage4.Size = new System.Drawing.Size(541, 655);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Trade";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -829,28 +870,6 @@
             this.rdoSARCloseNow.UseVisualStyleBackColor = true;
             this.rdoSARCloseNow.CheckedChanged += new System.EventHandler(this.rdoSARCloseNow_CheckedChanged);
             // 
-            // txtMaxTrades
-            // 
-            this.txtMaxTrades.Location = new System.Drawing.Point(236, 114);
-            this.txtMaxTrades.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.txtMaxTrades.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.txtMaxTrades.Name = "txtMaxTrades";
-            this.txtMaxTrades.Size = new System.Drawing.Size(40, 20);
-            this.txtMaxTrades.TabIndex = 5;
-            this.txtMaxTrades.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            // 
             // label24
             // 
             this.label24.AutoSize = true;
@@ -859,18 +878,6 @@
             this.label24.Size = new System.Drawing.Size(196, 13);
             this.label24.TabIndex = 4;
             this.label24.Text = "Maximum number of trades in 1 direction";
-            // 
-            // chkTrade
-            // 
-            this.chkTrade.AutoSize = true;
-            this.chkTrade.Checked = true;
-            this.chkTrade.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkTrade.Location = new System.Drawing.Point(7, 60);
-            this.chkTrade.Name = "chkTrade";
-            this.chkTrade.Size = new System.Drawing.Size(145, 17);
-            this.chkTrade.TabIndex = 3;
-            this.chkTrade.Text = "Place Automatic Trades?";
-            this.chkTrade.UseVisualStyleBackColor = true;
             // 
             // btnCloseDeal
             // 
@@ -904,36 +911,9 @@
             this.btnPlaceTrade.Name = "btnPlaceTrade";
             this.btnPlaceTrade.Size = new System.Drawing.Size(217, 23);
             this.btnPlaceTrade.TabIndex = 14;
-            this.btnPlaceTrade.Text = "Place Sample Trade";
+            this.btnPlaceTrade.Text = "Place Manual Trade";
             this.btnPlaceTrade.UseVisualStyleBackColor = true;
             this.btnPlaceTrade.Click += new System.EventHandler(this.btnPlaceTrade_Click);
-            // 
-            // txtSize
-            // 
-            this.txtSize.Location = new System.Drawing.Point(208, 175);
-            this.txtSize.Mask = "00.0";
-            this.txtSize.Name = "txtSize";
-            this.txtSize.Size = new System.Drawing.Size(68, 20);
-            this.txtSize.TabIndex = 9;
-            this.txtSize.Text = " 10";
-            // 
-            // txtStopDistance
-            // 
-            this.txtStopDistance.Location = new System.Drawing.Point(208, 207);
-            this.txtStopDistance.Mask = "00";
-            this.txtStopDistance.Name = "txtStopDistance";
-            this.txtStopDistance.Size = new System.Drawing.Size(68, 20);
-            this.txtStopDistance.TabIndex = 11;
-            this.txtStopDistance.Text = "20";
-            // 
-            // txtLimitDistance
-            // 
-            this.txtLimitDistance.Location = new System.Drawing.Point(208, 242);
-            this.txtLimitDistance.Mask = "00";
-            this.txtLimitDistance.Name = "txtLimitDistance";
-            this.txtLimitDistance.Size = new System.Drawing.Size(68, 20);
-            this.txtLimitDistance.TabIndex = 13;
-            this.txtLimitDistance.Text = "10";
             // 
             // label17
             // 
@@ -1010,6 +990,68 @@
             this.btnLoginTrade.UseVisualStyleBackColor = true;
             this.btnLoginTrade.Click += new System.EventHandler(this.btnLoginTrade_Click);
             // 
+            // txtMaxTrades
+            // 
+            this.txtMaxTrades.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::ForexAPITester.Properties.Settings.Default, "MaxTrades", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.txtMaxTrades.Location = new System.Drawing.Point(236, 114);
+            this.txtMaxTrades.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.txtMaxTrades.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.txtMaxTrades.Name = "txtMaxTrades";
+            this.txtMaxTrades.Size = new System.Drawing.Size(40, 20);
+            this.txtMaxTrades.TabIndex = 5;
+            this.txtMaxTrades.Value = global::ForexAPITester.Properties.Settings.Default.MaxTrades;
+            // 
+            // chkTrade
+            // 
+            this.chkTrade.AutoSize = true;
+            this.chkTrade.Checked = global::ForexAPITester.Properties.Settings.Default.AutomaticTrade;
+            this.chkTrade.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkTrade.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::ForexAPITester.Properties.Settings.Default, "AutomaticTrade", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.chkTrade.Location = new System.Drawing.Point(7, 60);
+            this.chkTrade.Name = "chkTrade";
+            this.chkTrade.Size = new System.Drawing.Size(145, 17);
+            this.chkTrade.TabIndex = 3;
+            this.chkTrade.Text = "Place Automatic Trades?";
+            this.chkTrade.UseVisualStyleBackColor = true;
+            // 
+            // txtSize
+            // 
+            this.txtSize.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::ForexAPITester.Properties.Settings.Default, "TradeSize", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.txtSize.Location = new System.Drawing.Point(208, 175);
+            this.txtSize.Mask = "00.0";
+            this.txtSize.Name = "txtSize";
+            this.txtSize.Size = new System.Drawing.Size(68, 20);
+            this.txtSize.TabIndex = 9;
+            this.txtSize.Text = global::ForexAPITester.Properties.Settings.Default.TradeSize;
+            // 
+            // txtStopDistance
+            // 
+            this.txtStopDistance.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::ForexAPITester.Properties.Settings.Default, "StopDistance", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.txtStopDistance.Location = new System.Drawing.Point(208, 207);
+            this.txtStopDistance.Mask = "00";
+            this.txtStopDistance.Name = "txtStopDistance";
+            this.txtStopDistance.Size = new System.Drawing.Size(68, 20);
+            this.txtStopDistance.TabIndex = 11;
+            this.txtStopDistance.Text = global::ForexAPITester.Properties.Settings.Default.StopDistance;
+            // 
+            // txtLimitDistance
+            // 
+            this.txtLimitDistance.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::ForexAPITester.Properties.Settings.Default, "LimitDistance", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.txtLimitDistance.Location = new System.Drawing.Point(208, 242);
+            this.txtLimitDistance.Mask = "00";
+            this.txtLimitDistance.Name = "txtLimitDistance";
+            this.txtLimitDistance.Size = new System.Drawing.Size(68, 20);
+            this.txtLimitDistance.TabIndex = 13;
+            this.txtLimitDistance.Text = global::ForexAPITester.Properties.Settings.Default.LimitDistance;
+            // 
             // tabPage5
             // 
             this.tabPage5.Controls.Add(this.cboFilter);
@@ -1018,19 +1060,20 @@
             this.tabPage5.Controls.Add(this.groupBox1);
             this.tabPage5.Controls.Add(this.cboProbeWindowMinutes);
             this.tabPage5.Controls.Add(this.label21);
-            this.tabPage5.Controls.Add(this.cboSignallingMinutes);
             this.tabPage5.Controls.Add(this.label20);
             this.tabPage5.Controls.Add(this.label19);
+            this.tabPage5.Controls.Add(this.cboSignallingMinutes);
             this.tabPage5.Controls.Add(this.cboInterval);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(694, 655);
+            this.tabPage5.Size = new System.Drawing.Size(541, 655);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Options";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
             // cboFilter
             // 
+            this.cboFilter.DataBindings.Add(new System.Windows.Forms.Binding("Value", global::ForexAPITester.Properties.Settings.Default, "FilterWindowMinutes", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.cboFilter.Increment = new decimal(new int[] {
             5,
             0,
@@ -1038,7 +1081,7 @@
             0});
             this.cboFilter.Location = new System.Drawing.Point(194, 100);
             this.cboFilter.Maximum = new decimal(new int[] {
-            60,
+            120,
             0,
             0,
             0});
@@ -1050,11 +1093,7 @@
             this.cboFilter.Name = "cboFilter";
             this.cboFilter.Size = new System.Drawing.Size(55, 20);
             this.cboFilter.TabIndex = 7;
-            this.cboFilter.Value = new decimal(new int[] {
-            25,
-            0,
-            0,
-            0});
+            this.cboFilter.Value = global::ForexAPITester.Properties.Settings.Default.FilterWindowMinutes;
             // 
             // btnLoginCreds
             // 
@@ -1160,25 +1199,6 @@
             this.label21.TabIndex = 4;
             this.label21.Text = "Probe Window (mins)";
             // 
-            // cboSignallingMinutes
-            // 
-            this.cboSignallingMinutes.FormattingEnabled = true;
-            this.cboSignallingMinutes.Items.AddRange(new object[] {
-            "120",
-            "90",
-            "75",
-            "60",
-            "45",
-            "30",
-            "20",
-            "15"});
-            this.cboSignallingMinutes.Location = new System.Drawing.Point(194, 44);
-            this.cboSignallingMinutes.Name = "cboSignallingMinutes";
-            this.cboSignallingMinutes.Size = new System.Drawing.Size(52, 21);
-            this.cboSignallingMinutes.TabIndex = 3;
-            this.cboSignallingMinutes.Text = "60";
-            this.cboSignallingMinutes.SelectedIndexChanged += new System.EventHandler(this.cboSignallingMinutes_SelectedIndexChanged);
-            // 
             // label20
             // 
             this.label20.AutoSize = true;
@@ -1197,8 +1217,29 @@
             this.label19.TabIndex = 0;
             this.label19.Text = "Interval (mins)";
             // 
+            // cboSignallingMinutes
+            // 
+            this.cboSignallingMinutes.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::ForexAPITester.Properties.Settings.Default, "SignallingMinutes", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.cboSignallingMinutes.FormattingEnabled = true;
+            this.cboSignallingMinutes.Items.AddRange(new object[] {
+            "120",
+            "90",
+            "75",
+            "60",
+            "45",
+            "30",
+            "20",
+            "15"});
+            this.cboSignallingMinutes.Location = new System.Drawing.Point(194, 44);
+            this.cboSignallingMinutes.Name = "cboSignallingMinutes";
+            this.cboSignallingMinutes.Size = new System.Drawing.Size(52, 21);
+            this.cboSignallingMinutes.TabIndex = 3;
+            this.cboSignallingMinutes.Text = global::ForexAPITester.Properties.Settings.Default.SignallingMinutes;
+            this.cboSignallingMinutes.SelectedIndexChanged += new System.EventHandler(this.cboSignallingMinutes_SelectedIndexChanged);
+            // 
             // cboInterval
             // 
+            this.cboInterval.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::ForexAPITester.Properties.Settings.Default, "Interval", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.cboInterval.FormattingEnabled = true;
             this.cboInterval.Items.AddRange(new object[] {
             "3",
@@ -1209,14 +1250,33 @@
             this.cboInterval.Name = "cboInterval";
             this.cboInterval.Size = new System.Drawing.Size(52, 21);
             this.cboInterval.TabIndex = 1;
-            this.cboInterval.Text = "1";
+            this.cboInterval.Text = global::ForexAPITester.Properties.Settings.Default.Interval;
             this.cboInterval.SelectedIndexChanged += new System.EventHandler(this.cboInterval_SelectedIndexChanged);
+            // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.txtLog);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Size = new System.Drawing.Size(541, 655);
+            this.tabPage7.TabIndex = 6;
+            this.tabPage7.Text = "Logs";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // txtLog
+            // 
+            this.txtLog.Location = new System.Drawing.Point(6, 3);
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtLog.Size = new System.Drawing.Size(549, 644);
+            this.txtLog.TabIndex = 39;
             // 
             // btnStartAuto
             // 
             this.btnStartAuto.Location = new System.Drawing.Point(519, 201);
             this.btnStartAuto.Name = "btnStartAuto";
-            this.btnStartAuto.Size = new System.Drawing.Size(106, 23);
+            this.btnStartAuto.Size = new System.Drawing.Size(126, 23);
             this.btnStartAuto.TabIndex = 35;
             this.btnStartAuto.Text = "Fill Initial 2hours";
             this.btnStartAuto.UseVisualStyleBackColor = true;
@@ -1224,7 +1284,7 @@
             // 
             // btnFillIntervals
             // 
-            this.btnFillIntervals.Location = new System.Drawing.Point(777, 201);
+            this.btnFillIntervals.Location = new System.Drawing.Point(785, 201);
             this.btnFillIntervals.Name = "btnFillIntervals";
             this.btnFillIntervals.Size = new System.Drawing.Size(106, 23);
             this.btnFillIntervals.TabIndex = 37;
@@ -1235,7 +1295,7 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(645, 74);
+            this.btnClear.Location = new System.Drawing.Point(519, 105);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(126, 23);
             this.btnClear.TabIndex = 22;
@@ -1245,7 +1305,7 @@
             // 
             // btnFindDetailRelated
             // 
-            this.btnFindDetailRelated.Location = new System.Drawing.Point(643, 201);
+            this.btnFindDetailRelated.Location = new System.Drawing.Point(651, 201);
             this.btnFindDetailRelated.Name = "btnFindDetailRelated";
             this.btnFindDetailRelated.Size = new System.Drawing.Size(128, 23);
             this.btnFindDetailRelated.TabIndex = 36;
@@ -1257,7 +1317,7 @@
             // 
             this.btnStartTimer.Location = new System.Drawing.Point(519, 144);
             this.btnStartTimer.Name = "btnStartTimer";
-            this.btnStartTimer.Size = new System.Drawing.Size(106, 23);
+            this.btnStartTimer.Size = new System.Drawing.Size(126, 23);
             this.btnStartTimer.TabIndex = 25;
             this.btnStartTimer.Text = "Start Live feed";
             this.btnStartTimer.UseVisualStyleBackColor = true;
@@ -1265,7 +1325,7 @@
             // 
             // btnStopTimer
             // 
-            this.btnStopTimer.Location = new System.Drawing.Point(643, 147);
+            this.btnStopTimer.Location = new System.Drawing.Point(651, 144);
             this.btnStopTimer.Name = "btnStopTimer";
             this.btnStopTimer.Size = new System.Drawing.Size(128, 23);
             this.btnStopTimer.TabIndex = 26;
@@ -1293,12 +1353,13 @@
             // 
             // btnResetInterval
             // 
-            this.btnResetInterval.Location = new System.Drawing.Point(519, 12);
+            this.btnResetInterval.Location = new System.Drawing.Point(519, 43);
             this.btnResetInterval.Name = "btnResetInterval";
-            this.btnResetInterval.Size = new System.Drawing.Size(106, 23);
+            this.btnResetInterval.Size = new System.Drawing.Size(126, 23);
             this.btnResetInterval.TabIndex = 2;
             this.btnResetInterval.Text = "Reset Interval";
             this.btnResetInterval.UseVisualStyleBackColor = true;
+            this.btnResetInterval.Visible = false;
             this.btnResetInterval.Click += new System.EventHandler(this.btnResetInterval_Click);
             // 
             // timeStart
@@ -1319,22 +1380,48 @@
             this.label22.TabIndex = 27;
             this.label22.Text = "Historic Start";
             // 
-            // btnCancelSwitchSearch
+            // btnCheckForUpdates
             // 
-            this.btnCancelSwitchSearch.Location = new System.Drawing.Point(390, 206);
-            this.btnCancelSwitchSearch.Name = "btnCancelSwitchSearch";
-            this.btnCancelSwitchSearch.Size = new System.Drawing.Size(144, 23);
-            this.btnCancelSwitchSearch.TabIndex = 11;
-            this.btnCancelSwitchSearch.Text = "Cancel switch search";
-            this.btnCancelSwitchSearch.UseVisualStyleBackColor = true;
-            this.btnCancelSwitchSearch.Click += new System.EventHandler(this.btnCancelSwitchSearch_Click);
+            this.btnCheckForUpdates.Location = new System.Drawing.Point(519, 11);
+            this.btnCheckForUpdates.Name = "btnCheckForUpdates";
+            this.btnCheckForUpdates.Size = new System.Drawing.Size(126, 23);
+            this.btnCheckForUpdates.TabIndex = 39;
+            this.btnCheckForUpdates.Text = "Check for updates...";
+            this.btnCheckForUpdates.UseVisualStyleBackColor = true;
+            this.btnCheckForUpdates.Click += new System.EventHandler(this.btnCheckForUpdates_Click);
+            // 
+            // txtEpic
+            // 
+            this.txtEpic.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::ForexAPITester.Properties.Settings.Default, "Epic", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.txtEpic.Location = new System.Drawing.Point(87, 41);
+            this.txtEpic.Name = "txtEpic";
+            this.txtEpic.Size = new System.Drawing.Size(175, 20);
+            this.txtEpic.TabIndex = 4;
+            this.txtEpic.Text = global::ForexAPITester.Properties.Settings.Default.Epic;
+            // 
+            // timer2
+            // 
+            this.timer2.Interval = 30000;
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
+            // btnCheckOpenTrades
+            // 
+            this.btnCheckOpenTrades.Location = new System.Drawing.Point(786, 175);
+            this.btnCheckOpenTrades.Name = "btnCheckOpenTrades";
+            this.btnCheckOpenTrades.Size = new System.Drawing.Size(105, 23);
+            this.btnCheckOpenTrades.TabIndex = 40;
+            this.btnCheckOpenTrades.Text = "Check Open";
+            this.btnCheckOpenTrades.UseVisualStyleBackColor = true;
+            this.btnCheckOpenTrades.Click += new System.EventHandler(this.btnCheckOpenTrades_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1369, 781);
+            this.ClientSize = new System.Drawing.Size(1692, 781);
+            this.Controls.Add(this.btnCheckOpenTrades);
+            this.Controls.Add(this.btnCheckForUpdates);
             this.Controls.Add(this.label22);
             this.Controls.Add(this.timeStart);
             this.Controls.Add(this.btnResetInterval);
@@ -1372,10 +1459,10 @@
             this.Controls.Add(this.btnMarketData);
             this.Controls.Add(this.txtEpic);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtLog);
             this.Controls.Add(this.btnLogin);
             this.Name = "Form1";
             this.Text = "FX API Trader";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
@@ -1390,6 +1477,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtFlexibleRange)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView5)).EndInit();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             this.grpSAROptions.ResumeLayout(false);
@@ -1400,6 +1489,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.cboFilter)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tabPage7.ResumeLayout(false);
+            this.tabPage7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1408,7 +1499,6 @@
         #endregion
 
         private System.Windows.Forms.Button btnLogin;
-        private System.Windows.Forms.TextBox txtLog;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtEpic;
         private System.Windows.Forms.Button btnMarketData;
@@ -1509,6 +1599,14 @@
         private System.Windows.Forms.Button btnStartSwitchSearch;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Button btnCancelSwitchSearch;
+        private System.Windows.Forms.DataGridView dataGridView5;
+        private System.Windows.Forms.Button btnCheckForUpdates;
+        private System.Windows.Forms.NumericUpDown txtFlexibleRange;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.TabPage tabPage7;
+        private System.Windows.Forms.TextBox txtLog;
+        private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Button btnCheckOpenTrades;
     }
 }
 

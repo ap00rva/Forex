@@ -38,7 +38,8 @@ namespace ForexAPITester
         }
         public static void ReadCredentials(ref APICredentials DataCredentials, ref APICredentials TradeCredentials)
         {
-            var userData = new FileStream(Application.UserAppDataPath + "\\appcreds.txt", FileMode.OpenOrCreate);
+            var dir = Directory.GetParent(Application.UserAppDataPath);
+            var userData = new FileStream(Path.Combine(dir.FullName, "appcreds.txt"), FileMode.OpenOrCreate);
             SimpleAES simpleAES = new SimpleAES();
             using (StreamReader userReader = new StreamReader(userData))
             {

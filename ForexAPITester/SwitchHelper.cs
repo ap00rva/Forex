@@ -14,6 +14,7 @@ namespace ForexAPITester
         public static bool SwitchStarted { get; set; }
         public static EventHandler ConditionMet = delegate { };
         public static decimal PriceToCheck { get; set; } = 0;
+        public static decimal FlexibleRange { get; set; }
         static SwitchHelper()
         {
             SwitchSearchStartTime = DateTime.Today.AddDays(100);
@@ -42,5 +43,26 @@ namespace ForexAPITester
             }
             return false;
         }
+        public static bool IsConditionMetForProbeTrade(PriceView CurrentPriceData)
+        {
+            if (SwitchDirection == TradeDirection.Buy)
+            {
+                return CurrentPriceData.AskClose >= (PriceToCheck - FlexibleRange);
+            }
+            else if (SwitchDirection == TradeDirection.Sell)
+            {
+                return CurrentPriceData.AskClose <= (PriceToCheck + FlexibleRange);
+            }
+            return false;
+        }
+
+        public static void Reset()
+        {
+            PriceToCheck = 0;
+            SwitchSearchStartTime = DateTime.Today.AddDays(100);
+            SwitchSearchEndTime = DateTime.Today.AddDays(100);
+
+        }
+
     }
 }

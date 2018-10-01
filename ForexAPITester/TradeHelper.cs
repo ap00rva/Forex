@@ -2,6 +2,7 @@
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace ForexAPITester
         private static AccountMain acctTrade;
         private static int currentTrades;
         private static bool closeExistingTrades = false;
-
+        private static int positionAge;
         public static SARCloseOptions CloseOptions { get; set; } = SARCloseOptions.CloseNow;
         public static string TradeUrl
         {
@@ -60,6 +61,7 @@ namespace ForexAPITester
             tradeUrl = "https://demo-api.ig.com/gateway";
             currentTrades = 0;
             LoginToTradingAccount();
+            positionAge = -60;
         }
 
         public static void LoginToTradingAccount()
@@ -90,8 +92,9 @@ namespace ForexAPITester
             }
 
         }
-        public static string PlaceTrade(string Epic, Library.TradeDirection Direction, double Size, int StopDistance, int LimitDistance, bool IsSingleDirectional, int MaxNumberOfTrades)
+        public static string PlaceTrade(string Epic, Library.TradeDirection Direction, double Size, int StopDistance, int LimitDistance, bool IsSingleDirectional, int MaxNumberOfTrades, out string ErrorMessage)
         {
+            ErrorMessage = string.Empty;
             bool place = false;
             TradeDirection currentDirection;
             if (closeExistingTrades && CloseOptions == SARCloseOptions.CloseLater && lastTradeDirection != Direction)
@@ -142,6 +145,10 @@ namespace ForexAPITester
                     lastTradeDirection = Direction;
                     currentTrades += 1;
                 }
+                else
+                {
+                    ErrorMessage = tradeResponse.Content;
+                }
             }
             return tradeRef;
 
@@ -153,13 +160,9 @@ namespace ForexAPITester
             {
                 try
                 {
-                    var positionsResponse = APIHelper.Positions($"{tradeUrl}/deal/positions", apiCredentials.APIKey, tradeXToken, tradeCstToken);
-                    if (positionsResponse.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        var position = JsonConvert.DeserializeObject<TradePosition>(positionsResponse.Content);
-                        var positionToCloseDeal = position.positions.Where(p => p.position.dealReference == tradeRef).FirstOrDefault();
-                        retVal = positionToCloseDeal != null;
-                    }
+                    var position = GetPositions();
+                    var positionToCloseDeal = position.positions.Where(p => p.position.dealReference == tradeRef).FirstOrDefault();
+                    retVal = positionToCloseDeal != null;
                 }
                 catch
                 {
@@ -174,13 +177,9 @@ namespace ForexAPITester
             int positions = 0;
             try
             {
-                var positionsResponse = APIHelper.Positions($"{tradeUrl}/deal/positions", apiCredentials.APIKey, tradeXToken, tradeCstToken);
-                if (positionsResponse.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    var position = JsonConvert.DeserializeObject<TradePosition>(positionsResponse.Content);
-                    positions = position.positions.Count;
-                    Direction = (position.positions.FirstOrDefault()?.position?.direction) == "BUY" ? TradeDirection.Buy : TradeDirection.Sell;
-                }
+                var position = GetPositions();
+                positions = position.positions.Count;
+                Direction = (position.positions.FirstOrDefault()?.position?.direction) == "BUY" ? TradeDirection.Buy : TradeDirection.Sell;
             }
             catch
             {
@@ -193,19 +192,15 @@ namespace ForexAPITester
         {
             try
             {
-                var positionsResponse = APIHelper.Positions($"{tradeUrl}/deal/positions", (tradeUrl == Library.DemoTradingUrl ? apiCredentials.APIKey : dataCredentials.APIKey), tradeXToken, tradeCstToken);
-                if (positionsResponse.StatusCode == System.Net.HttpStatusCode.OK)
+                var position = GetPositions();
+                var positionToCloseDeal = position.positions.Where(p => p.position.dealReference == tradeRefToClose).FirstOrDefault();
+                var dealIdToClose = positionToCloseDeal.position.dealId;
+                var responseClose = APIHelper.CloseTradeRequest($"{tradeUrl}/deal/positions/otc", (tradeUrl == Library.DemoTradingUrl ? apiCredentials.APIKey : dataCredentials.APIKey), tradeXToken, tradeCstToken, new CloseTradeRequest()
                 {
-                    var position = JsonConvert.DeserializeObject<TradePosition>(positionsResponse.Content);
-                    var positionToCloseDeal = position.positions.Where(p => p.position.dealReference == tradeRefToClose).FirstOrDefault();
-                    var dealIdToClose = positionToCloseDeal.position.dealId;
-                    var responseClose = APIHelper.CloseTradeRequest($"{tradeUrl}/deal/positions/otc", (tradeUrl == Library.DemoTradingUrl ? apiCredentials.APIKey : dataCredentials.APIKey), tradeXToken, tradeCstToken, new CloseTradeRequest()
-                    {
-                        dealId = dealIdToClose,
-                        direction = lastTradeDirection == TradeDirection.Buy ? "SELL" : "BUY",
-                        size = size
-                    });
-                }
+                    dealId = dealIdToClose,
+                    direction = lastTradeDirection == TradeDirection.Buy ? "SELL" : "BUY",
+                    size = size
+                });
             }
             catch
             {
@@ -215,19 +210,15 @@ namespace ForexAPITester
         }
         public static void CloseAllTrades()
         {
-            var positionsResponse = APIHelper.Positions($"{tradeUrl}/deal/positions", apiCredentials.APIKey, tradeXToken, tradeCstToken);
-            if (positionsResponse.StatusCode == System.Net.HttpStatusCode.OK)
+            var position = GetPositions();
+            foreach (var positionToCloseDeal in position.positions)
             {
-                var position = JsonConvert.DeserializeObject<TradePosition>(positionsResponse.Content);
-                foreach (var positionToCloseDeal in position.positions)
+                var responseClose = APIHelper.CloseTradeRequest($"{tradeUrl}/deal/positions/otc", (tradeUrl == Library.DemoTradingUrl ? apiCredentials.APIKey : dataCredentials.APIKey), tradeXToken, tradeCstToken, new CloseTradeRequest()
                 {
-                    var responseClose = APIHelper.CloseTradeRequest($"{tradeUrl}/deal/positions/otc", (tradeUrl == Library.DemoTradingUrl ? apiCredentials.APIKey : dataCredentials.APIKey), tradeXToken, tradeCstToken, new CloseTradeRequest()
-                    {
-                        dealId = positionToCloseDeal.position.dealId,
-                        direction = positionToCloseDeal.position.direction == "BUY" ? "SELL" : "BUY",
-                        size = positionToCloseDeal.position.size
-                    });
-                }
+                    dealId = positionToCloseDeal.position.dealId,
+                    direction = positionToCloseDeal.position.direction == "BUY" ? "SELL" : "BUY",
+                    size = positionToCloseDeal.position.size
+                });
             }
 
         }
@@ -239,6 +230,60 @@ namespace ForexAPITester
             var accountDetails = APIHelper.makeRequest($"{tradeUrl}/deal/accounts", (tradeUrl == Library.DemoTradingUrl ? apiCredentials.APIKey : dataCredentials.APIKey), tradeXToken, tradeCstToken, Method.GET, "1");
             var tradeAccountInfo = JsonConvert.DeserializeObject<TradingAccounts>(accountDetails.Content);
             return tradeAccountInfo;
+        }
+        public static void CheckOldPositionsAndClose()
+        {
+            var position = GetPositions();
+            if (position != null && position.positions?.Count() > 0)
+            {
+                //check for old open positions
+                var oldPositions = position.positions.Where(p => p.position?.createdDateUTC < DateTime.UtcNow.AddMinutes(positionAge));
+                foreach (var oldPosition in oldPositions)
+                {
+                    var limit = oldPosition.position.limitLevel;
+                    var level = oldPosition.position.level; //price at which order was placed
+                    if (oldPosition.position.direction == "SELL")
+                    {
+                        //if current is going in the direction of limit then good, else its going against us
+                        if (oldPosition.market.offer < level)
+                        {
+                            //take profit and close
+                            CloseTrade(oldPosition.position.dealReference);
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"Losing Opening:{oldPosition.position.level} - Current:{oldPosition.market.offer} Loss:{oldPosition.position.level - oldPosition.market.offer}");
+                        }
+                    }
+                    else
+                    {
+                        //if current is going in the direction of limit then good, else its going against us
+                        if (oldPosition.market.offer > level)
+                        {
+                            //take profit and close
+                            CloseTrade(oldPosition.position.dealReference);
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"Losing Opening:{oldPosition.position.level} - Current:{oldPosition.market.offer} Loss:{oldPosition.position.level - oldPosition.market.offer}");
+                        }
+                    }
+                }
+            }
+        }
+        private static TradePosition GetPositions()
+        {
+
+            var positionsResponse = APIHelper.Positions($"{tradeUrl}/deal/positions", (tradeUrl == Library.DemoTradingUrl ? apiCredentials.APIKey : dataCredentials.APIKey), tradeXToken, tradeCstToken);
+            if (positionsResponse.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var position = JsonConvert.DeserializeObject<TradePosition>(positionsResponse.Content);
+                return position;
+            }
+            else
+            {
+                return new TradePosition();
+            }
         }
     }
 }

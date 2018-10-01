@@ -20,7 +20,8 @@ namespace ForexAPITester
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            var userData = new FileStream(Application.UserAppDataPath + "\\appcreds.txt", FileMode.OpenOrCreate);
+            var dir = Directory.GetParent(Application.UserAppDataPath);
+            var userData = new FileStream(Path.Combine(dir.FullName, "appcreds.txt"), FileMode.OpenOrCreate);
             userData.Position = 0;
             SimpleAES simpleAES = new SimpleAES();
             using (StreamWriter userWriter = new StreamWriter(userData))
